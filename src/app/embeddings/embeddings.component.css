@@ -1,0 +1,24 @@
+.lab-content { padding: 8 16 32 16; }
+.lab-content-wide { padding: 8 40 32 40; }
+.lab-actions {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  margin: 0 -4 8 -4;
+}
+.lab-actions Button {
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 128;
+  margin: 4;
+}
+Button { min-height: 48; white-space: normal; }
+Button:disabled { opacity: 0.45; }
+TextField, TextView { min-height: 48; font-size: 16; }
+.lab-body { color: #d8d8e0; font-size: 14; margin-bottom: 12; line-height: 20; }
+.lab-label { color: #c9c9d4; font-size: 14; font-weight: 600; margin-bottom: 6; }
+.lab-input { min-height: 96; }
+.lab-number { color: #5eead4; font-size: 14; margin-bottom: 8; }
+.lab-batch-modes Button { min-width: 72; }
+.lab-batch-row { margin-top: 8; padding-top: 8; }
+.lab-batch-cell { color: #d8d8e0; font-size: 14; line-height: 20; margin: 0 4 12 0; }

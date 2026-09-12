@@ -1,0 +1,3 @@
+-keep class com.sam.embeddings.SamEmbeddingEngine { *; }
+-keep class com.sam.embeddings.JniBackend { *; }
+-keepclasseswithmembernames,includedescriptorclasses class * { native <methods>; }

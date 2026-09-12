@@ -1,0 +1,51 @@
+<GridLayout rows="auto, *" class="sam-screen">
+  <GridLayout row="0">
+    <GridLayout columns="auto, *" class="sam-header">
+      <Label
+        col="0"
+        class="sam-chip"
+        text="Menu"
+        verticalAlignment="center"
+        accessibilityLabel="Open menu"
+        (tap)="drawer.show()"
+      ></Label>
+      <Label col="1" class="sam-title sam-header-copy" text="Agents" verticalAlignment="center"></Label>
+    </GridLayout>
+    <StackLayout class="sam-hairline" verticalAlignment="bottom"></StackLayout>
+  </GridLayout>
+
+  <ScrollView row="1">
+    <StackLayout class="sam-pad">
+      @if (editingId(); as id) {
+        <StackLayout class="sam-card">
+          <Label class="sam-heading" [text]="nameFor(id)"></Label>
+          <Label class="sam-muted" text="System prompt sent with every message." textWrap="true"></Label>
+          <TextView
+            class="sam-prompt"
+            hint="System prompt"
+            [text]="draft()"
+            textWrap="true"
+            (textChange)="onDraft($event)"
+          ></TextView>
+          @if (saved()) {
+            <Label class="sam-status" text="Saved"></Label>
+          }
+          <Label class="sam-primary" text="Save prompt" (tap)="save()"></Label>
+          <Label class="sam-choice" text="Reset to default" (tap)="reset()"></Label>
+          <Label class="sam-choice" text="Back" (tap)="cancel()"></Label>
+        </StackLayout>
+      } @else {
+        @for (agent of prompts.agents(); track agent.id) {
+          <StackLayout class="sam-card">
+            <Label class="sam-heading" [text]="agent.name"></Label>
+            <Label class="sam-muted" [text]="agent.prompt" textWrap="true"></Label>
+            <Label class="sam-choice" text="Edit system prompt" (tap)="beginEdit(agent.id)"></Label>
+          </StackLayout>
+        }
+      }
+    </StackLayout>
+  </ScrollView>
+  @if (drawer.open()) {
+    <ns-drawer row="0" rowSpan="2" active="agents"></ns-drawer>
+  }
+</GridLayout>

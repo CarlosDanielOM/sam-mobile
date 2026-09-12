@@ -1,0 +1,184 @@
+<GridLayout rows="auto, auto, *, auto" class="sam-screen">
+  <GridLayout row="0">
+    <GridLayout columns="*, auto" class="sam-header">
+      <GridLayout col="0" columns="auto, *">
+        <Label
+          col="0"
+          class="sam-chip"
+          verticalAlignment="center"
+          text="Menu"
+          accessibilityLabel="Open menu"
+          (tap)="drawer.show()"
+        ></Label>
+        <StackLayout col="1" verticalAlignment="center" class="sam-header-copy">
+          <Label [text]="chat.sessions.selectedSession()?.title || 'SAM'" class="sam-title"></Label>
+          <StackLayout orientation="horizontal">
+            <StackLayout
+              [class]="providers.active() ? 'sam-live-dot' : 'sam-off-dot'"
+              verticalAlignment="center"
+            ></StackLayout>
+            <Label class="sam-subtitle" [text]="providers.activeLabel()" (tap)="toggleModels()"></Label>
+          </StackLayout>
+        </StackLayout>
+      </GridLayout>
+      @if (chat.usageSummary(); as usage) {
+        <StackLayout
+          col="1"
+          class="sam-usage"
+          verticalAlignment="center"
+          accessibilityLabel="Usage details"
+          (tap)="toggleUsage()"
+        >
+          <Label class="sam-usage-tokens" [text]="usage.tokens"></Label>
+          @if (usage.context !== null || usage.cost !== null) {
+            <GridLayout columns="auto, auto" class="sam-usage-bottom">
+              <StackLayout col="0" orientation="horizontal" class="sam-usage-context">
+                @if (usage.context !== null) {
+                  <Placeholder verticalAlignment="center" (creatingView)="createRing($event)"></Placeholder>
+                  <Label class="sam-usage-context-text" [text]="usage.context"></Label>
+                }
+              </StackLayout>
+              <Label col="1" class="sam-usage-cost" [text]="usage.cost ?? ''"></Label>
+            </GridLayout>
+          }
+        </StackLayout>
+      }
+    </GridLayout>
+    <StackLayout class="sam-hairline" verticalAlignment="bottom"></StackLayout>
+  </GridLayout>
+
+  @if (picking()) {
+    <ScrollView row="1" height="220">
+      <StackLayout class="sam-pick">
+        @for (option of providers.modelOptions(); track option.providerId + ':' + option.modelId) {
+          <Label
+            [class]="providers.isActive(option.providerId, option.modelId) ? 'sam-primary' : 'sam-choice'"
+            [text]="option.label"
+            (tap)="pickModel(option)"
+          ></Label>
+        }
+      </StackLayout>
+    </ScrollView>
+  } @else if (inspecting()) {
+    @if (chat.turnUsage(); as detail) {
+      <ScrollView row="1" height="360">
+        <StackLayout class="sam-usage-panel">
+          <Label class="sam-usage-title" [text]="detail.title"></Label>
+          <GridLayout columns="*, auto" class="sam-usage-line">
+            <Label col="0" class="sam-usage-k" text="API-equivalent"></Label>
+            <Label col="1" class="sam-usage-v" [text]="detail.apiEquivalent"></Label>
+          </GridLayout>
+          <GridLayout columns="*, auto" class="sam-usage-line">
+            <Label col="0" class="sam-usage-k" text="Actual metered"></Label>
+            <Label col="1" class="sam-usage-v" [text]="detail.metered"></Label>
+          </GridLayout>
+          @if (detail.showAgents) {
+            <Label class="sam-usage-title" [text]="'Turn total: ' + (detail.turnTotal ?? '—')"></Label>
+            @for (agent of detail.agents; track agent.label) {
+              <GridLayout columns="*, auto" class="sam-usage-line">
+                <Label col="0" class="sam-usage-tree" [text]="agent.label"></Label>
+                <Label col="1" class="sam-usage-v" [text]="agent.cost"></Label>
+              </GridLayout>
+            }
+          }
+          @for (row of detail.rows; track row.label) {
+            <GridLayout columns="*, auto" class="sam-usage-line">
+              <Label
+                col="0"
+                [class]="row.indent ? 'sam-usage-k sam-usage-indent' : row.value ? 'sam-usage-k' : 'sam-usage-section'"
+                [text]="row.label"
+              ></Label>
+              <Label col="1" class="sam-usage-v" [text]="row.value"></Label>
+            </GridLayout>
+          }
+        </StackLayout>
+      </ScrollView>
+    }
+  }
+
+  <GridLayout row="2">
+  <ScrollView (loaded)="onThreadLoaded($event)" (scroll)="onThreadScroll($event)">
+    <StackLayout class="sam-thread" (layoutChanged)="onThreadLayout()">
+      @if (!chat.messages().length) {
+        <StackLayout class="sam-empty-wrap">
+          <GridLayout class="sam-orb-ring" horizontalAlignment="center">
+            <GridLayout class="sam-orb">
+              <Label class="sam-orb-text" text="S"></Label>
+            </GridLayout>
+          </GridLayout>
+          <Label class="sam-empty-title" text="Personal assistant"></Label>
+          <Label
+            class="sam-empty"
+            textWrap="true"
+            [text]="
+              providers.active()
+                ? 'Type below to start chatting.'
+                : 'Tap Connect, pick a provider, and sign in.'
+            "
+          ></Label>
+        </StackLayout>
+      }
+      @for (message of chat.messages(); track message.id) {
+        <StackLayout [class]="message.role === 'user' ? 'sam-row-user' : 'sam-row-bot'">
+          <Label
+            [class]="message.role === 'user' ? 'sam-bubble-user' : 'sam-bubble-bot'"
+            [text]="message.text || (message.status === 'streaming' ? '…' : '')"
+            textWrap="true"
+          ></Label>
+          @if (chat.labelFor(message); as status) {
+            <Label class="sam-bubble-status" [text]="status"></Label>
+          }
+          @if (chat.canRetry(message)) {
+            <Label class="sam-retry" text="Retry" (tap)="chat.retry(message.id)"></Label>
+          }
+        </StackLayout>
+      }
+    </StackLayout>
+  </ScrollView>
+  @if (!atBottom()) {
+    <Label
+      class="sam-jump"
+      text="Latest"
+      horizontalAlignment="right"
+      verticalAlignment="bottom"
+      accessibilityLabel="Scroll to latest"
+      (tap)="scrollToLatest()"
+    ></Label>
+  }
+  </GridLayout>
+
+  <StackLayout row="3" class="sam-composer">
+    @if (chat.sessions.error(); as err) {
+      <Label class="sam-error" [text]="err" textWrap="true"></Label>
+    }
+    @if (chat.error(); as err) {
+      <Label class="sam-error" [text]="err" textWrap="true"></Label>
+    }
+    <GridLayout class="sam-input-ring">
+      <GridLayout columns="*, auto" class="sam-input-row">
+        <TextField
+          col="0"
+          class="sam-input"
+          hint="Message SAM"
+          [text]="chat.draft()"
+          [isEnabled]="!!chat.conversationId() && !chat.sending()"
+          returnKeyType="send"
+          (textChange)="onDraft($event)"
+          (returnPress)="chat.send()"
+        ></TextField>
+        <Label
+          col="1"
+          [class]="sendClass()"
+          verticalAlignment="center"
+          [text]="chat.sending() ? 'Stop' : 'Send'"
+          [accessibilityLabel]="chat.sending() ? 'Stop generating' : 'Send message'"
+          [isEnabled]="chat.sending() || !!chat.draft().trim()"
+          (tap)="chat.sending() ? chat.cancel() : chat.send()"
+        ></Label>
+      </GridLayout>
+    </GridLayout>
+  </StackLayout>
+  @if (drawer.open()) {
+    <ns-drawer row="0" rowSpan="4" active="home"></ns-drawer>
+  }
+</GridLayout>

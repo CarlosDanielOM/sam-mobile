@@ -1,0 +1,232 @@
+<GridLayout rows="auto, *" class="sam-screen" (loaded)="mounted()" (unloaded)="unmounted()" (layoutChanged)="layout($event)">
+  <GridLayout row="0" columns="auto, *" class="sam-header">
+    <Button col="0" class="sam-chip" text="Menu" minHeight="48" accessibilityLabel="Open menu" (tap)="drawer.show()"></Button>
+    <Label col="1" class="sam-title sam-header-copy" text="Embeddings Lab" textWrap="true" verticalAlignment="center"></Label>
+  </GridLayout>
+  <ScrollView row="1">
+    <StackLayout [class]="wide() ? 'lab-content-wide' : 'lab-content'">
+      <Label class="sam-muted" text="Local model diagnostics. No chats, sessions, or network inference. Work and results survive leaving this page." textWrap="true"></Label>
+      @if (lab.unavailable(); as unavailable) {
+        <Label class="sam-error" [text]="unavailable" textWrap="true"></Label>
+        <Button class="sam-choice" text="Retry native availability" textWrap="true" (tap)="lab.connect()"></Button>
+      }
+      @if (lab.errorText(); as error) {
+        <Label class="sam-error" [text]="error" textWrap="true" accessibilityLiveRegion="polite"></Label>
+        <Label class="sam-muted" text="Retry the relevant action below after resolving the condition. Completed reports are retained." textWrap="true"></Label>
+      }
+      @if (lab.state().busy; as busy) {
+        <Label class="sam-status" [text]="'Working: ' + busy + '. You may leave this page.'" textWrap="true" accessibilityLiveRegion="polite"></Label>
+      }
+
+      <StackLayout class="sam-card">
+        <Label class="sam-heading" text="01 / Device"></Label>
+        <Label class="lab-body" [text]="lab.deviceText()" textWrap="true"></Label>
+        <Button class="sam-choice" [text]="lab.sampling() ? 'Sampling device...' : 'Sample device'" textWrap="true" [isEnabled]="!lab.locked()" (tap)="lab.sample()"></Button>
+        <Label class="sam-muted" text="PSS is process memory, not exact model RAM. Temperatures and thermal status can be unavailable; status 3+ triggers a safe benchmark stop." textWrap="true"></Label>
+      </StackLayout>
+
+      <StackLayout class="sam-card">
+        <Label class="sam-heading" text="02 / Installation"></Label>
+        <Label class="sam-status" [text]="'State: ' + (lab.state().installer?.state || 'unavailable')" textWrap="true"></Label>
+        <Label class="lab-body" [text]="lab.installationText()" textWrap="true"></Label>
+        @if (lab.state().installer; as installer) {
+          <Label class="lab-label" text="Download progress"></Label>
+          <Progress [value]="installer.progressPercent" maxValue="100" accessibilityLabel="Model download progress"></Progress>
+          <Label class="lab-label" text="Verification progress"></Label>
+          <Progress [value]="installer.verificationProgressPercent" maxValue="100" accessibilityLabel="Model verification progress"></Progress>
+        }
+        <FlexboxLayout class="lab-actions">
+          <Button class="sam-primary" text="Download / retry" textWrap="true" [isEnabled]="!lab.locked()" (tap)="lab.install('download')"></Button>
+          <Button class="sam-choice" text="Cancel download" textWrap="true" [isEnabled]="lab.state().installer?.operation === 'download' && !!lab.state().installer?.busy" (tap)="lab.cancelDownload()"></Button>
+          <Button class="sam-choice" text="Verify files" textWrap="true" [isEnabled]="!lab.locked()" (tap)="lab.install('verify')"></Button>
+          <Button class="sam-choice" text="Install partial" textWrap="true" [isEnabled]="!lab.locked() && lab.state().installer?.state === 'partial'" (tap)="lab.install('install')"></Button>
+          <Button class="sam-danger" text="Remove model / partial" textWrap="true" [isEnabled]="!lab.locked()" (tap)="remove()"></Button>
+        </FlexboxLayout>
+        <Label class="sam-muted" text="Cancelled or interrupted downloads may leave an uninstalled partial file. Download / retry starts again from zero, not resume. Install partial verifies a completed partial before installing. Status refreshes every 500 ms while mounted. Removal drains and unloads the runtime first." textWrap="true"></Label>
+      </StackLayout>
+
+      <StackLayout class="sam-card">
+        <Label class="sam-heading" text="03 / Runtime"></Label>
+        <Label class="sam-status" [text]="'State: ' + lab.state().runtime" textWrap="true"></Label>
+        @if (lab.report().runtimeModel; as model) {
+          <Label class="lab-body" [text]="(model.modelId || 'unavailable') + '\nDimensions: ' + lab.measure(model.dimensions, '', 0) + ' / Token limit: ' + lab.measure(model.maxTokens, '', 0) + '\nBackend revision: ' + (model.backendRevision || 'unavailable') + '\nBatch implementation: ' + (model.batchMode || 'unavailable')" textWrap="true"></Label>
+        }
+        <FlexboxLayout class="lab-actions">
+          <Button class="sam-primary" text="Load model" textWrap="true" [isEnabled]="!lab.locked() && lab.state().runtime !== 'ready' && lab.state().installer?.state === 'installed'" (tap)="lab.load()"></Button>
+          <Button class="sam-choice" text="Unload model" textWrap="true" [isEnabled]="!lab.locked() && lab.state().runtime !== 'unloaded'" (tap)="lab.unload()"></Button>
+          <Button class="sam-choice" text="Explicit warm-up inference" textWrap="true" [isEnabled]="lab.ready()" (tap)="lab.warmUp()"></Button>
+        </FlexboxLayout>
+        @for (load of lab.state().loads.slice(-1); track load.timestamp) {
+          <Label class="lab-body" [text]="'Last load: ' + load.outcome + '\nNative load: ' + lab.measure(load.loadDurationMs, 'ms') + '\nTotal including samples: ' + lab.measure(load.elapsedMs, 'ms') + '\nPSS before: ' + lab.bytes(load.before?.appPssBytes) + '\nPSS after: ' + lab.bytes(load.after?.appPssBytes) + '\nObserved PSS delta: ' + lab.bytes(load.observedPssDeltaBytes, true)" textWrap="true"></Label>
+        } @empty {
+          <Label class="sam-muted" text="No load measured yet. Load samples device memory before and after; the difference is not exact model RAM." textWrap="true"></Label>
+        }
+        @if (lab.state().warmUp; as warmUp) {
+          <Label class="lab-body" [text]="'Explicit warm-up result\n' + lab.summary(warmUp)" textWrap="true"></Label>
+        }
+      </StackLayout>
+
+      <StackLayout class="sam-card">
+        <Label class="sam-heading" text="04 / Single Embedding"></Label>
+        <Label class="lab-label" text="Input text (stays local, excluded from export)"></Label>
+        <TextView class="sam-prompt lab-input" accessibilityLabel="Single embedding input" [isEnabled]="!lab.locked()" [text]="lab.input()" (textChange)="lab.input.set(text($event))"></TextView>
+        <FlexboxLayout class="lab-actions">
+          <Button [class]="lab.kind() === 'query' ? 'sam-primary' : 'sam-choice'" [accessibilityLabel]="lab.kind() === 'query' ? 'Query mode, selected' : 'Query mode'" text="Query mode" [isEnabled]="!lab.locked()" (tap)="lab.kind.set('query')"></Button>
+          <Button [class]="lab.kind() === 'document' ? 'sam-primary' : 'sam-choice'" [accessibilityLabel]="lab.kind() === 'document' ? 'Document mode, selected' : 'Document mode'" text="Document mode" [isEnabled]="!lab.locked()" (tap)="lab.kind.set('document')"></Button>
+        </FlexboxLayout>
+        <Button class="sam-primary" text="Embed input" [isEnabled]="lab.ready() && !!lab.input().trim()" (tap)="lab.runSingle()"></Button>
+        @if (lab.state().single; as single) {
+          <Label class="lab-body" [text]="lab.summary(single)" textWrap="true"></Label>
+        } @else {
+          <Label class="sam-muted" text="Load a model, then embed text to inspect 1024 finite values, norm, the first 12 values, actual tokens, timing, and warm metadata." textWrap="true"></Label>
+        }
+      </StackLayout>
+
+      <StackLayout class="sam-card">
+        <Label class="sam-heading" text="05 / Similarity"></Label>
+        <Label class="lab-label" text="Search query"></Label>
+        <TextView class="sam-prompt lab-input" accessibilityLabel="Similarity search query" [isEnabled]="!lab.locked()" [text]="lab.query()" (textChange)="lab.query.set(text($event))"></TextView>
+        @for (document of lab.documents(); track $index; let i = $index) {
+          <Label class="lab-label" [text]="'Document ' + ['A', 'B', 'C'][i]"></Label>
+          <TextView class="sam-prompt lab-input" [accessibilityLabel]="'Similarity document ' + ['A', 'B', 'C'][i]" [isEnabled]="!lab.locked()" [text]="document" (textChange)="lab.setDocument(i, text($event))"></TextView>
+        }
+        <Button class="sam-primary" text="Rank A / B / C" [isEnabled]="lab.ready()" (tap)="lab.similarity()"></Button>
+        <Label class="sam-muted" text="Production embedQuery and embedDocuments, then validated cosine. Scores are not probabilities. Results below are from the last run." textWrap="true"></Label>
+        @for (row of lab.state().similarity; track row.document; let rank = $index) {
+          <Label class="lab-number" [text]="(rank + 1) + '. Document ' + ['A', 'B', 'C'][row.document] + ' / cosine ' + lab.measure(row.cosine, '', 6) + ' / ' + row.tokens + ' tokens'" textWrap="true"></Label>
+        } @empty { <Label class="sam-muted" text="No similarity run yet."></Label> }
+        <Button class="sam-choice" text="Run correctness diagnostics" textWrap="true" [isEnabled]="lab.ready()" (tap)="lab.correctness()"></Button>
+        @if (lab.state().correctness; as check) {
+          <Label class="lab-body" [text]="'Repeat-input cosine: ' + lab.measure(check.repeatCosine, '', 6) + '\nMaximum absolute difference: ' + lab.measure(check.maxAbsoluteDifference, '', 8) + '\nStable within ' + check.tolerance + ': ' + check.stableWithinTolerance + '\nRelated document ranks above unrelated: ' + check.relatedRanksAboveUnrelated" textWrap="true"></Label>
+        }
+        <Label class="sam-muted" text="Correctness uses fixed diagnostic text, a repeat-input tolerance, and related versus unrelated ranking. No brittle expected vector values." textWrap="true"></Label>
+      </StackLayout>
+
+      <StackLayout class="sam-card">
+        <Label class="sam-heading" text="06 / Cross-Language"></Label>
+        <Label class="lab-label" text="Fixed Spanish query"></Label>
+        <Label class="lab-body" [text]="lab.crossQuery" textWrap="true"></Label>
+        @for (document of lab.crossDocuments; track $index; let i = $index) {
+          <Label class="lab-body" [text]="['A', 'B', 'C'][i] + ' / ' + document" textWrap="true"></Label>
+        }
+        <Button class="sam-primary" text="Rank English documents" textWrap="true" [isEnabled]="lab.ready()" (tap)="lab.crossLanguage()"></Button>
+        @for (row of lab.state().crossLanguage; track row.document; let rank = $index) {
+          <Label class="lab-number" [text]="(rank + 1) + '. Document ' + ['A', 'B', 'C'][row.document] + ' / cosine ' + lab.measure(row.cosine, '', 6) + ' / ' + row.tokens + ' tokens'" textWrap="true"></Label>
+        } @empty {
+          <Label class="sam-muted" text="No scores yet. Results are computed by the installed model, never prefilled." textWrap="true"></Label>
+        }
+      </StackLayout>
+
+      <StackLayout class="sam-card">
+        <Label class="sam-heading" text="07 / Benchmarks"></Label>
+        <Label class="sam-muted" text="Deterministic input is sized using the actual model tokenizer, including production document formatting. Near-limit targets min(512, model limit). No character estimates." textWrap="true"></Label>
+        <Label class="lab-label" text="Input token target"></Label>
+        <FlexboxLayout class="lab-actions">
+          @for (size of sizes; track size.value) {
+            <Button [class]="lab.size() === size.value ? 'sam-primary' : 'sam-choice'" [text]="size.title" [accessibilityLabel]="size.title + (lab.size() === size.value ? ', selected' : '')" textWrap="true" [isEnabled]="!lab.locked()" (tap)="lab.size.set(size.value)"></Button>
+          }
+        </FlexboxLayout>
+        <Label class="sam-muted" text="Manual size checklist: select Short, ~128, ~256, then Near 512 and run Warm / 1 document for each. Repeat with 10 or 100 documents as needed. Nothing runs automatically; 1000 remains a separately confirmed stress test." textWrap="true"></Label>
+        <Button class="sam-choice" text="Cold: load + first inference" textWrap="true" [isEnabled]="!lab.locked() && lab.state().runtime === 'unloaded' && lab.state().installer?.state === 'installed'" (tap)="lab.benchmark(1, true)"></Button>
+        <Label class="sam-muted" text="Cold requires an unloaded model and measures load separately. Warm tests refuse an unloaded model; they do not silently load or warm up. Use explicit warm-up if desired; results record whether the first inference was actually warm." textWrap="true"></Label>
+        <FlexboxLayout class="lab-actions">
+          <Button class="sam-primary" text="Warm / 1 document" textWrap="true" [isEnabled]="lab.ready()" (tap)="lab.benchmark(1)"></Button>
+          <Button class="sam-choice" text="Warm / 10 documents" textWrap="true" [isEnabled]="lab.ready()" (tap)="lab.benchmark(10)"></Button>
+          <Button class="sam-choice" text="Warm / 100 documents" textWrap="true" [isEnabled]="lab.ready()" (tap)="lab.benchmark(100)"></Button>
+          <Button class="sam-danger" text="Manual / 1000 documents..." textWrap="true" [isEnabled]="lab.ready()" (tap)="thousand()"></Button>
+        </FlexboxLayout>
+        <Label class="sam-muted" text="These legacy benchmarks explicitly remain sequential. Production embedDocuments supports native batching; use Batching Lab below to compare it. Legacy chunks retain at most 10 vectors. Memory and thermal sampling occurs between chunks; cancellation waits for native work to drain. Sampled peaks can miss transient peaks. Latency P95 uses nearest rank." textWrap="true"></Label>
+        @if (lab.state().progress; as progress) {
+          <Progress [value]="progress.completed" [maxValue]="progress.requested" accessibilityLabel="Benchmark progress"></Progress>
+          <Label class="sam-status" [text]="progress.phase + ': ' + progress.completed + ' / ' + progress.requested" textWrap="true" accessibilityLiveRegion="polite"></Label>
+        }
+        @if (lab.activeBenchmark(); as active) {
+          <Label class="lab-body" [text]="lab.deviceSample(active.latestDevice)" textWrap="true" accessibilityLiveRegion="polite"></Label>
+        }
+        <Button class="sam-danger" text="Cancel benchmark / diagnostic" textWrap="true" [isEnabled]="['benchmark', 'batch-comparison', 'batch-benchmark', 'single', 'warm-up', 'similarity', 'cross-language', 'correctness', 'load'].includes(lab.state().busy) && !lab.state().installer?.busy" (tap)="lab.cancel()"></Button>
+        @for (run of lab.state().benchmarks; track run.timestamp) {
+          <StackLayout class="sam-model">
+            <Label class="lab-label" [text]="run.mode + ' / ' + run.size + ' / ' + run.requested + ' documents / ' + run.outcome" textWrap="true"></Label>
+            <Label class="lab-body" [text]="lab.benchmarkSummary(run)" textWrap="true"></Label>
+            @if (run.error; as error) {
+              <Label class="sam-error" [text]="error.code + ': ' + error.message" textWrap="true"></Label>
+            }
+          </StackLayout>
+        } @empty { <Label class="sam-muted" text="No benchmark reports. Failed and cancelled tests also appear here." textWrap="true"></Label> }
+      </StackLayout>
+
+      <StackLayout class="sam-card">
+        <Label class="sam-heading" text="08 / Batching Lab"></Label>
+        <Label class="lab-body" [text]="lab.batchLimitsText()" textWrap="true"></Label>
+        <Label class="lab-label" text="Input size (actual tokenizer)"></Label>
+        <FlexboxLayout class="lab-actions">
+          @for (size of sizes; track size.value) {
+            <Button [class]="lab.batchSize() === size.value ? 'sam-primary' : 'sam-choice'" [text]="size.value === 'near512' ? 'Max (near 512)' : size.title" [accessibilityLabel]="'Batch input ' + size.title + (lab.batchSize() === size.value ? ', selected' : '')" textWrap="true" [isEnabled]="!lab.locked()" (tap)="lab.batchSize.set(size.value)"></Button>
+          }
+        </FlexboxLayout>
+        <Label class="lab-label" text="Requested batch mode / target"></Label>
+        <FlexboxLayout class="lab-actions lab-batch-modes">
+          @for (target of lab.batchModes; track target) {
+            <Button [class]="lab.batchTarget() === target ? 'sam-primary' : 'sam-choice'" [text]="target === 1 ? 'Sequential' : '' + target" [accessibilityLabel]="(target === 1 ? 'Sequential' : 'Batch target ' + target) + (lab.batchTarget() === target ? ', selected' : '')" textWrap="true" [isEnabled]="!lab.locked()" (tap)="lab.batchTarget.set(target)"></Button>
+          }
+        </FlexboxLayout>
+        <Label class="lab-label" text="Documents per tier"></Label>
+        <FlexboxLayout class="lab-actions">
+          @for (count of [100, 1000]; track count) {
+            <Button [class]="lab.batchCount() === count ? 'sam-primary' : 'sam-choice'" [text]="count === 100 ? '100 (default)' : '1000 sustained'" [accessibilityLabel]="count + ' documents per tier' + (lab.batchCount() === count ? ', selected' : '')" textWrap="true" [isEnabled]="!lab.locked()" (tap)="lab.batchCount.set(count === 1000 ? 1000 : 100)"></Button>
+          }
+        </FlexboxLayout>
+        <Label class="sam-muted" [text]="lab.batchPlan().matrix" textWrap="true"></Label>
+        <Button class="sam-primary" text="Run Batch Comparison" textWrap="true" [isEnabled]="lab.ready()" (tap)="batch(true)"></Button>
+        <Label [class]="lab.batchUnsupported() ? 'sam-error' : 'sam-muted'" [text]="lab.batchPlan().target" textWrap="true"></Label>
+        <Button class="sam-choice" text="Run selected target + prerequisites" textWrap="true" [isEnabled]="lab.ready() && !lab.batchUnsupported()" (tap)="batch(false)"></Button>
+        <Label class="sam-muted" text="One selected size only, never an automatic all-size suite. Full comparisons confirm total cost; every sustained 1000 run requires confirmation. Battery heavy: it can drain battery and heat the device. Safety checks can clamp, skip or stop tiers; requested targets are not actual parallelism. Use Cancel benchmark / diagnostic above; native work must drain." textWrap="true"></Label>
+        @if (lab.batchLiveText(); as live) {
+          <Label class="lab-body" [text]="live" textWrap="true" accessibilityLiveRegion="polite"></Label>
+        }
+        <Label class="lab-body" [text]="lab.batteryEnergyText()" textWrap="true"></Label>
+        <Label class="sam-muted" text="ms/doc is amortized warm wall time, not single-document latency. Peak RAM is sampled process PSS, not exact model RAM. Energy/doc is a device-wide counter estimate including screen/system, not model-only energy; short or unsupported windows remain unavailable." textWrap="true"></Label>
+        @for (comparison of lab.batchReports(); track comparison.timestamp) {
+          <StackLayout class="sam-model">
+            <Label class="lab-label" [text]="comparison.title" textWrap="true"></Label>
+            <Label class="lab-body" [text]="comparison.correctness" textWrap="true"></Label>
+            <Label class="sam-muted" [text]="comparison.tokens" textWrap="true"></Label>
+            @if (comparison.error; as error) {
+              <Label class="sam-error" [text]="error" textWrap="true"></Label>
+            }
+            <Button class="sam-choice" [text]="lab.expandedBatch() === comparison.timestamp ? 'Hide tier diagnostics' : 'Show initial / mid / final + diagnostics'" textWrap="true" [isEnabled]="!lab.locked()" (tap)="lab.expandedBatch.set(lab.expandedBatch() === comparison.timestamp ? null : comparison.timestamp)"></Button>
+            @for (run of comparison.runs; track run.target) {
+              <StackLayout class="lab-batch-row">
+                <Label class="lab-label" [text]="run.title" textWrap="true"></Label>
+                <GridLayout rows="auto, auto" columns="*, *, *">
+                  @for (metric of run.metrics; track metric.name; let i = $index) {
+                    <Label class="lab-batch-cell" [row]="i < 3 ? 0 : 1" [col]="i % 3" [text]="metric.name + '\n' + metric.value" [accessibilityLabel]="metric.name + ': ' + metric.value" textWrap="true"></Label>
+                  }
+                </GridLayout>
+                @if (run.reason) { <Label class="sam-error" [text]="run.reason" textWrap="true"></Label> }
+                @if (run.energyReason) { <Label class="sam-muted" [text]="'Energy: ' + run.energyReason" textWrap="true"></Label> }
+                @if (lab.expandedBatch() === comparison.timestamp) {
+                  <Label class="lab-body" [text]="run.details" textWrap="true"></Label>
+                }
+              </StackLayout>
+            }
+          </StackLayout>
+        } @empty {
+          <Label class="sam-muted" text="No batch comparisons yet. Load the model and run a selected workload. Running, skipped, failed and cancelled results stay in memory when you leave this page." textWrap="true"></Label>
+        }
+      </StackLayout>
+
+      <StackLayout class="sam-card">
+        <Label class="sam-heading" text="09 / Export"></Label>
+        <Label class="sam-muted" text="Versioned report: device/model metadata, installation metrics, load observations, benchmarks, thermal samples, errors, and cancellations. Excludes inputs, vectors (including previews), paths, URLs, credentials, device identifiers, and chats. Latest 20 runs/loads and 50 errors retained." textWrap="true"></Label>
+        <FlexboxLayout class="lab-actions">
+          <Button class="sam-choice" text="Copy human report" textWrap="true" [isEnabled]="!lab.locked()" (tap)="lab.copy()"></Button>
+          <Button class="sam-primary" [text]="lab.exporting() ? 'Opening share/save...' : 'Share / save JSON'" textWrap="true" [isEnabled]="!lab.locked()" (tap)="lab.export()"></Button>
+        </FlexboxLayout>
+        @if (lab.notice(); as notice) { <Label class="sam-status" [text]="notice" textWrap="true" accessibilityLiveRegion="polite"></Label> }
+        <Label class="lab-body" [text]="'Diagnostic cancellations: ' + lab.state().cancellations + ' / Recorded errors: ' + lab.state().errors.length" textWrap="true"></Label>
+      </StackLayout>
+    </StackLayout>
+  </ScrollView>
+  @if (drawer.open()) { <ns-drawer row="0" rowSpan="2" active="embeddings"></ns-drawer> }
+</GridLayout>

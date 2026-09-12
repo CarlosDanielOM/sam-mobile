@@ -1,0 +1,552 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================
+   SAM · Graphite Violet — calm dark theme
+   quiet neutrals · single muted violet accent · teal status
+   ========================================================== */
+
+Page {
+  background-color: #0c0c10;
+}
+
+.sam-screen {
+  background-color: #0c0c10;
+}
+
+/* ---------- empty-state orb ---------- */
+
+.sam-orb-ring {
+  border-width: 1;
+  border-color: rgba(91, 86, 184, 0.30);
+  border-radius: 40;
+  padding: 9;
+  margin-bottom: 24;
+}
+
+.sam-orb {
+  width: 72;
+  height: 72;
+  border-radius: 26;
+  background-color: #5b56b8;
+}
+
+.sam-orb-text {
+  color: #ffffff;
+  font-size: 32;
+  font-weight: 700;
+  text-align: center;
+  horizontal-align: center;
+  vertical-align: center;
+}
+
+/* ---------- header ---------- */
+
+.sam-header {
+  background-color: transparent;
+  padding: 14 16 10 16;
+}
+
+.sam-header-copy {
+  padding-left: 10;
+}
+
+.sam-hairline {
+  height: 1;
+  background-color: #1e1e26;
+}
+
+.sam-title {
+  color: #f2f2f5;
+  font-size: 19;
+  font-weight: 700;
+}
+
+.sam-subtitle {
+  color: #9a9aa6;
+  font-size: 12;
+  margin-top: 1;
+  vertical-align: center;
+}
+
+.sam-live-dot {
+  width: 6;
+  height: 6;
+  border-radius: 3;
+  background-color: #5eead4;
+  vertical-align: center;
+  margin: 0 6 1 0;
+}
+
+.sam-off-dot {
+  width: 6;
+  height: 6;
+  border-radius: 3;
+  background-color: #4a4a55;
+  vertical-align: center;
+  margin: 0 6 1 0;
+}
+
+.sam-chip {
+  color: #c9c9d4;
+  background-color: #17171d;
+  border-width: 1;
+  border-color: #2a2a34;
+  font-size: 13;
+  font-weight: 600;
+  padding: 9 14;
+  border-radius: 999;
+  text-align: center;
+}
+
+/* ---------- usage readout (header) ---------- */
+
+.sam-usage-tokens {
+  color: #d9d9e1;
+  font-size: 11;
+  font-weight: 600;
+  text-align: right;
+  horizontal-align: right;
+}
+
+.sam-usage-bottom {
+  horizontal-align: right;
+  margin-top: 3;
+}
+
+.sam-usage-context-text {
+  color: #8b8b96;
+  font-size: 11;
+  margin-left: 4;
+}
+
+.sam-usage-cost {
+  color: #8b8b96;
+  font-size: 11;
+  text-align: right;
+  margin-left: 8;
+}
+
+/* ---------- usage panel ---------- */
+
+.sam-usage-panel {
+  background-color: #141419;
+  border-width: 1;
+  border-color: #23232c;
+  border-radius: 18;
+  margin: 6 16 12 16;
+  padding: 14;
+}
+
+.sam-usage-title {
+  color: #f2f2f5;
+  font-size: 15;
+  font-weight: 700;
+  margin-bottom: 8;
+}
+
+.sam-usage-line {
+  margin-bottom: 6;
+}
+
+.sam-usage-k {
+  color: #9a9aa6;
+  font-size: 13;
+}
+
+.sam-usage-section {
+  color: #5eead4;
+  font-size: 13;
+  font-weight: 700;
+  margin-top: 8;
+}
+
+.sam-usage-indent {
+  padding-left: 14;
+}
+
+.sam-usage-v {
+  color: #d9d9e1;
+  font-size: 13;
+  text-align: right;
+}
+
+.sam-usage-tree {
+  color: #b3b3bf;
+  font-size: 13;
+}
+
+/* ---------- model picker ---------- */
+
+.sam-pick {
+  background-color: #141419;
+  border-width: 1;
+  border-color: #23232c;
+  border-radius: 18;
+  margin: 6 16 12 16;
+  padding: 10;
+}
+
+.sam-back {
+  color: #a89ff5;
+  font-size: 14;
+  font-weight: 600;
+  padding: 10 16 10 0;
+}
+
+/* ---------- thread ---------- */
+
+.sam-thread {
+  padding: 12 14 24 14;
+}
+
+.sam-empty-wrap {
+  margin-top: 56;
+  padding: 0 24;
+}
+
+.sam-empty-title {
+  color: #f2f2f5;
+  font-size: 22;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 6;
+}
+
+.sam-empty {
+  color: #9a9aa6;
+  font-size: 14;
+  line-height: 20;
+  text-align: center;
+}
+
+.sam-row-user {
+  horizontal-align: right;
+  margin-bottom: 10;
+  width: 84%;
+}
+
+.sam-row-bot {
+  horizontal-align: left;
+  margin-bottom: 10;
+  width: 84%;
+}
+
+.sam-bubble-user {
+  background-color: #5b56b8;
+  color: #ffffff;
+  padding: 10 13;
+  border-top-left-radius: 16;
+  border-top-right-radius: 16;
+  border-bottom-right-radius: 5;
+  border-bottom-left-radius: 16;
+  font-size: 15;
+  line-height: 21;
+}
+
+.sam-bubble-bot {
+  background-color: #16161c;
+  border-width: 1;
+  border-color: #26262f;
+  color: #ececf1;
+  padding: 10 13;
+  border-top-left-radius: 16;
+  border-top-right-radius: 16;
+  border-bottom-right-radius: 16;
+  border-bottom-left-radius: 5;
+  font-size: 15;
+  line-height: 21;
+}
+
+.sam-bubble-status {
+  color: #777783;
+  font-size: 11;
+  margin-top: 4;
+}
+
+.sam-retry {
+  color: #5eead4;
+  font-size: 13;
+  font-weight: 600;
+  margin-top: 5;
+}
+
+.sam-jump {
+  color: #d9d9e1;
+  background-color: #1a1a21;
+  border-width: 1;
+  border-color: #2c2c37;
+  font-size: 13;
+  font-weight: 600;
+  padding: 10 14;
+  border-radius: 999;
+  text-align: center;
+  margin: 0 14 12 0;
+  min-width: 48;
+  min-height: 44;
+}
+
+/* ---------- composer ---------- */
+
+.sam-composer {
+  background-color: transparent;
+  padding: 8 14 16 14;
+}
+
+.sam-error {
+  color: #f26d6f;
+  background-color: rgba(226, 72, 77, 0.10);
+  border-width: 1;
+  border-color: rgba(226, 72, 77, 0.30);
+  font-size: 13;
+  padding: 9 11;
+  border-radius: 12;
+  margin-bottom: 8;
+}
+
+.sam-input-ring {
+  background-color: transparent;
+  padding: 0;
+}
+
+.sam-input-row {
+  background-color: #131318;
+  border-width: 1;
+  border-color: #2b2b35;
+  border-radius: 24;
+  padding: 4 5 4 12;
+}
+
+.sam-input {
+  background-color: transparent;
+  color: #f2f2f5;
+  placeholder-color: #5c5c68;
+  padding: 9 4;
+  font-size: 15;
+  min-height: 42;
+}
+
+.sam-send {
+  color: #ffffff;
+  font-size: 14;
+  font-weight: 700;
+  padding: 10 18;
+  border-radius: 999;
+  text-align: center;
+  min-width: 72;
+  margin-left: 4;
+}
+
+.sam-send-live {
+  background-color: #5b56b8;
+}
+
+.sam-send-idle {
+  background-color: #1e1e26;
+  color: #5c5c68;
+}
+
+.sam-send-stop {
+  background-color: #d9484f;
+}
+
+/* ---------- drawer ---------- */
+
+.sam-drawer {
+  background-color: #101016;
+  padding: 22 14 28 14;
+}
+
+.sam-drawer-title {
+  color: #f2f2f5;
+  font-size: 20;
+  font-weight: 700;
+  margin-bottom: 18;
+}
+
+.sam-scrim {
+  background-color: rgba(4, 3, 10, 0.78);
+}
+
+/* ---------- cards / panels (providers, agents) ---------- */
+
+.sam-pad {
+  padding: 8 16 28 16;
+}
+
+.sam-card {
+  background-color: #141419;
+  border-width: 1;
+  border-color: #23232c;
+  border-radius: 18;
+  padding: 18;
+  margin-bottom: 12;
+}
+
+.sam-heading {
+  color: #f2f2f5;
+  font-size: 18;
+  font-weight: 700;
+  margin-bottom: 4;
+}
+
+.sam-muted {
+  color: #9a9aa6;
+  font-size: 14;
+  line-height: 20;
+  margin-bottom: 14;
+}
+
+.sam-status {
+  color: #5eead4;
+  font-size: 14;
+  font-weight: 600;
+  margin-bottom: 14;
+}
+
+.sam-status-off {
+  color: #777783;
+}
+
+/* ---------- buttons ---------- */
+
+.sam-primary {
+  color: #ffffff;
+  background-color: #5b56b8;
+  font-size: 15;
+  font-weight: 700;
+  padding: 13;
+  border-radius: 999;
+  text-align: center;
+  margin-bottom: 10;
+}
+
+.sam-choice {
+  color: #d8d8e0;
+  background-color: #17171d;
+  border-width: 1;
+  border-color: #2a2a34;
+  font-size: 15;
+  font-weight: 600;
+  padding: 13;
+  border-radius: 999;
+  text-align: center;
+  margin-bottom: 10;
+}
+
+.sam-soon {
+  color: #5c5c68;
+  background-color: #121218;
+  border-width: 1;
+  border-color: #22222b;
+  font-size: 14;
+  font-weight: 600;
+  padding: 13;
+  border-radius: 999;
+  text-align: center;
+}
+
+.sam-danger {
+  color: #f26d6f;
+  background-color: #201014;
+  border-width: 1;
+  border-color: #452127;
+  font-size: 15;
+  font-weight: 600;
+  padding: 13;
+  border-radius: 999;
+  text-align: center;
+}
+
+/* ---------- providers: device code + models ---------- */
+
+.sam-code {
+  color: #5eead4;
+  background-color: #0d1b1a;
+  border-width: 1;
+  border-color: #1e3d38;
+  font-family: monospace;
+  font-size: 20;
+  font-weight: 700;
+  margin-bottom: 10;
+  padding: 14;
+  border-radius: 14;
+  text-align: center;
+}
+
+.sam-model {
+  background-color: #0f0f14;
+  border-width: 1;
+  border-color: #20202a;
+  border-radius: 14;
+  padding: 11;
+  margin-bottom: 8;
+}
+
+.sam-model-name {
+  color: #f2f2f5;
+  font-size: 14;
+  font-weight: 600;
+  margin-bottom: 3;
+}
+
+.sam-model-price {
+  color: #b3b3bf;
+  font-size: 12;
+  margin-bottom: 6;
+}
+
+.sam-model-source {
+  color: #777783;
+  font-size: 11;
+  margin-bottom: 6;
+}
+
+.sam-model-action {
+  color: #d8d8e0;
+  background-color: #1d1d26;
+  border-width: 1;
+  border-color: #2e2e3a;
+  font-size: 13;
+  font-weight: 600;
+  padding: 11;
+  border-radius: 11;
+  text-align: center;
+  min-height: 42;
+}
+
+.sam-price-label {
+  color: #9a9aa6;
+  font-size: 12;
+  margin-bottom: 3;
+}
+
+.sam-price-field {
+  background-color: #0f0f14;
+  border-width: 1;
+  border-color: #23232c;
+  color: #f2f2f5;
+  placeholder-color: #5c5c68;
+  padding: 11;
+  font-size: 14;
+  border-radius: 11;
+  margin-bottom: 8;
+  min-height: 42;
+}
+
+/* ---------- agents: prompt editor ---------- */
+
+.sam-prompt {
+  background-color: #0f0f14;
+  border-width: 1;
+  border-color: #23232c;
+  color: #f2f2f5;
+  placeholder-color: #5c5c68;
+  font-size: 14;
+  line-height: 20;
+  padding: 11;
+  border-radius: 12;
+  min-height: 170;
+  margin-bottom: 10;
+}

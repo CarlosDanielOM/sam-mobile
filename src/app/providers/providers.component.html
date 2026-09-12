@@ -1,0 +1,135 @@
+<GridLayout rows="auto, *" class="sam-screen">
+  <GridLayout row="0">
+    <GridLayout columns="auto, *" class="sam-header">
+      <Label
+        col="0"
+        class="sam-chip"
+        text="Menu"
+        verticalAlignment="center"
+        accessibilityLabel="Open menu"
+        (tap)="drawer.show()"
+      ></Label>
+      <Label col="1" class="sam-title sam-header-copy" text="Providers" verticalAlignment="center"></Label>
+    </GridLayout>
+    <StackLayout class="sam-hairline" verticalAlignment="bottom"></StackLayout>
+  </GridLayout>
+
+  <ScrollView row="1">
+    <StackLayout class="sam-pad">
+      @for (item of catalog; track item.id) {
+        <StackLayout class="sam-card">
+          <Label class="sam-heading" [text]="item.name"></Label>
+          <Label class="sam-muted" [text]="item.blurb" textWrap="true"></Label>
+
+          @if (!item.methods.length) {
+            <Label class="sam-soon" text="Coming soon"></Label>
+          } @else if (providers.state(item.id).connected) {
+            <Label
+              class="sam-status"
+              [text]="connectionLabel(providers.state(item.id).credentialType)"
+            ></Label>
+            @for (model of pricing.models(item.id); track model.key) {
+              <StackLayout class="sam-model">
+                <Label class="sam-model-name" [text]="model.name" textWrap="true"></Label>
+                @if (pricing.editingKey() === model.key) {
+                  <Label class="sam-price-label" text="Input $ / 1M tokens"></Label>
+                  <TextField
+                    class="sam-price-field"
+                    hint="0.30 or 30c"
+                    [text]="pricing.draftInput()"
+                    (textChange)="pricing.onDraftInput($event)"
+                  ></TextField>
+                  <Label class="sam-price-label" text="Output $ / 1M tokens"></Label>
+                  <TextField
+                    class="sam-price-field"
+                    hint="1.20"
+                    [text]="pricing.draftOutput()"
+                    (textChange)="pricing.onDraftOutput($event)"
+                  ></TextField>
+                  <Label class="sam-price-label" text="Cache read $ / 1M tokens"></Label>
+                  <TextField
+                    class="sam-price-field"
+                    hint="optional · 0.03"
+                    [text]="pricing.draftCacheRead()"
+                    (textChange)="pricing.onDraftCacheRead($event)"
+                  ></TextField>
+                  <Label class="sam-price-label" text="Cache write $ / 1M tokens"></Label>
+                  <TextField
+                    class="sam-price-field"
+                    hint="optional · blank if none"
+                    [text]="pricing.draftCacheWrite()"
+                    (textChange)="pricing.onDraftCacheWrite($event)"
+                  ></TextField>
+                  @if (pricing.editError(); as err) {
+                    <Label class="sam-error" [text]="err" textWrap="true"></Label>
+                  }
+                  <Label class="sam-primary" text="Save price" (tap)="pricing.saveEdit(model)"></Label>
+                  <Label class="sam-choice" text="Cancel" (tap)="pricing.cancelEdit()"></Label>
+                } @else {
+                  <Label class="sam-model-price" [text]="model.priceLabel" textWrap="true"></Label>
+                  @if (model.cacheLabel) {
+                    <Label class="sam-model-price" [text]="model.cacheLabel" textWrap="true"></Label>
+                  }
+                  @if (model.sourceLabel) {
+                    <Label class="sam-model-source" [text]="model.sourceLabel"></Label>
+                  }
+                  <Label
+                    class="sam-model-action"
+                    [text]="model.actionLabel"
+                    (tap)="pricing.beginEdit(model)"
+                  ></Label>
+                }
+              </StackLayout>
+            }
+            <Label class="sam-danger" text="Disconnect" (tap)="providers.disconnect(item.id)"></Label>
+          } @else {
+            <Label class="sam-status sam-status-off" text="Not connected"></Label>
+
+            @if (providers.connectingId() === item.id && auth.device(); as device) {
+              <Label
+                class="sam-muted"
+                textWrap="true"
+                text="Copy the code, open the sign-in page in Chrome, then come back here. SAM keeps waiting."
+              ></Label>
+              <Label class="sam-code" [text]="formatCode(device.userCode)" textWrap="true"></Label>
+              <Label class="sam-primary" text="Copy code" (tap)="copyCode()"></Label>
+              <Label class="sam-primary" text="Open sign-in page" (tap)="openVerificationUrl()"></Label>
+              @if (copied()) {
+                <Label class="sam-status" text="Copied"></Label>
+              }
+            }
+
+            @if (providers.connectingId() === item.id && auth.status(); as status) {
+              <Label class="sam-muted" [text]="status" textWrap="true"></Label>
+            }
+
+            @if (providers.error(item.id); as err) {
+              <Label class="sam-error" [text]="err" textWrap="true"></Label>
+            }
+
+            @for (method of item.methods; track method) {
+              @if (method === 'oauth') {
+                <Label
+                  class="sam-primary"
+                  [text]="providers.connectingId() === item.id ? 'Waiting for sign-in…' : oauthLabel(item)"
+                  [isEnabled]="!providers.connectingId()"
+                  (tap)="providers.connect(item.id, 'oauth')"
+                ></Label>
+              } @else {
+                <Label
+                  class="sam-choice"
+                  text="Use API key"
+                  [isEnabled]="!providers.connectingId()"
+                  (tap)="providers.connect(item.id, 'api_key')"
+                ></Label>
+              }
+            }
+          }
+        </StackLayout>
+      }
+    </StackLayout>
+    </ScrollView>
+  @if (drawer.open()) {
+    <ns-drawer row="0" rowSpan="2" active="providers"></ns-drawer>
+  }
+  </GridLayout>

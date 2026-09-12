@@ -1,0 +1,44 @@
+// You can add your native dependencies here
+def embeddingsAar = file("${rootProject.projectDir}/../../native/build/outputs/aar/sam-embeddings.aar")
+if (!embeddingsAar.exists()) {
+  throw new GradleException('Build the embeddings runtime first: bash native/scripts/build-android.sh')
+}
+dependencies {
+  implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+  implementation files(embeddingsAar)
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib:2.1.21'
+}
+
+android {
+  compileSdkVersion 35
+  buildToolsVersion "35"
+  // ndkVersion ""
+
+  defaultConfig {
+    minSdkVersion 24
+    targetSdkVersion 35
+
+    // Version Information
+    versionCode 1
+    versionName "1.0.0"
+    
+    generatedDensities = []
+
+    ndk {
+      abiFilters.clear()
+      abiFilters.add("arm64-v8a")
+    }
+  }
+
+  aaptOptions {
+    additionalParameters "--no-version-vectors"
+  }
+}
+
+// NativeScript's metadata task tracks a dependency-list path, not local AAR contents.
+// Rebuilding this AAR must invalidate the generated JavaScript/native bridge as well.
+tasks.configureEach {
+  if (name == 'buildMetadata') {
+    inputs.file(embeddingsAar)
+  }
+}

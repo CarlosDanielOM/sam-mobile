@@ -1,0 +1,59 @@
+<GridLayout columns="260, *">
+  <GridLayout col="0" class="sam-drawer">
+    <ScrollView>
+      <StackLayout>
+        <Label class="sam-drawer-title" text="SAM"></Label>
+        <Label
+          [class]="active() === 'home' ? 'sam-primary' : 'sam-choice'"
+          text="Home"
+          (tap)="goHome()"
+        ></Label>
+        <Label
+          [class]="active() === 'providers' ? 'sam-primary' : 'sam-choice'"
+          text="Providers"
+          (tap)="goProviders()"
+        ></Label>
+        <Label
+          [class]="active() === 'agents' ? 'sam-primary' : 'sam-choice'"
+          text="Agents"
+          (tap)="goAgents()"
+        ></Label>
+        <Button
+          [class]="active() === 'embeddings' ? 'sam-primary' : 'sam-choice'"
+          text="Embeddings Lab"
+          minHeight="48"
+          textWrap="true"
+          (tap)="goEmbeddings()"
+        ></Button>
+        <Label class="sam-drawer-title" [text]="'Sessions (' + sessions.activeSessions().length + ')'"></Label>
+        <Label class="sam-subtitle" [text]="sessions.runningCount() + ' running'"></Label>
+        <Button class="sam-primary" text="New Session" minHeight="48" (tap)="newSession()"></Button>
+        @if (sessions.error(); as error) {
+          <Label class="sam-error" [text]="error" textWrap="true"></Label>
+        }
+        @for (session of sessions.activeSessions(); track session.id) {
+          <StackLayout>
+            <Button
+              [class]="sessions.selectedSessionId() === session.id ? 'sam-primary' : 'sam-choice'"
+              [text]="(sessions.selectedSessionId() === session.id ? 'Selected: ' : '') + (session.title || 'SAM') + ' (' + session.runningCount + ' running)'"
+              textWrap="true"
+              minHeight="48"
+              (tap)="selectSession(session.id)"
+            ></Button>
+            <Button class="sam-choice" text="Close" [accessibilityLabel]="'Close session ' + (session.title || 'SAM')" minHeight="48" (tap)="sessions.archive(session.id)"></Button>
+          </StackLayout>
+        } @empty {
+          <Label class="sam-subtitle" text="No active sessions. Create a new session." textWrap="true"></Label>
+        }
+        @if (sessions.archivedSessions().length) {
+          <Label class="sam-drawer-title" text="Archived"></Label>
+          @for (session of sessions.archivedSessions(); track session.id) {
+            <Label class="sam-subtitle" [text]="session.title || 'SAM'" textWrap="true"></Label>
+            <Button class="sam-choice" text="Restore" [accessibilityLabel]="'Restore session ' + (session.title || 'SAM')" minHeight="48" (tap)="restoreSession(session.id)"></Button>
+          }
+        }
+      </StackLayout>
+    </ScrollView>
+  </GridLayout>
+  <StackLayout col="1" class="sam-scrim" (tap)="drawer.hide()"></StackLayout>
+</GridLayout>

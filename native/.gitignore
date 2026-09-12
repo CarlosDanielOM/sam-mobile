@@ -1,0 +1,7 @@
+.gradle/
+.kotlin/
+.cxx/
+build/
+vendor/
+local.properties
+*.gguf
