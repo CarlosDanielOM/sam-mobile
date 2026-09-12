@@ -12,7 +12,7 @@ cyan-blue coexist with distinct roles. Surfaces feel calm; movement feels soft,
 short, and deliberate. Keep text, actions, and state understandable at a glance.
 
 Interlude is used on Home/chat, Providers, Agents, Embeddings Lab, the drawer,
-Appearance, and the initial UI Kit view. Quiet, Facet, Ledger, and Spectrum remain
+Appearance, Retrieval Lab, and the initial UI Kit view. Quiet, Facet, Ledger, and Spectrum remain
 isolated design studies in the kit. A future study becomes production only when
 explicitly adopted; adding a study never changes the app's saved appearance.
 

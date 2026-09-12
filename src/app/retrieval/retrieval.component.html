@@ -1,0 +1,121 @@
+<GridLayout samThemeScope rows="auto, *" class="sam-screen">
+  <GridLayout row="0" columns="auto, *, auto" class="sam-header">
+    <Button col="0" samButton="ghost" text="Menu" accessibilityLabel="Open SAM menu" (tap)="drawer.show()"></Button>
+    <Label col="1" samText="heading" text="Retrieval Lab" verticalAlignment="center" textWrap="true"></Label>
+    <Button col="2" samButton="ghost" text="Cancel" [samDisabled]="!busy()" (tap)="cancel()"></Button>
+  </GridLayout>
+  <ScrollView row="1">
+    <StackLayout width="100%" maxWidth="760" horizontalAlignment="center" padding="16">
+      <Label samText="body" text="Isolated local search experiments. Nothing is retrieved for SAM conversations." textWrap="true" marginBottom="16"></Label>
+      <Label samText="meta" [text]="status()" textWrap="true"></Label>
+      @if(error()){<Label samText="body" [text]="error()" textWrap="true" marginBottom="16"></Label>}
+      <StackLayout samSurface="card" marginBottom="16">
+        <Label samText="heading" text="Corpus and index"></Label>
+        <Label samText="body" [text]="loaded() ? 'Embedding model loaded' : 'Embedding model unloaded. Lexical search remains available.'" textWrap="true"></Label>
+        <FlexboxLayout samActions marginTop="16">
+          <Button samButton="secondary" samAction text="Load installed model" [samDisabled]="busy()" (tap)="load()"></Button>
+          <Button samButton="primary" samAction text="Create Test Corpus" [samDisabled]="busy()" (tap)="create()"></Button>
+          <Button samButton="secondary" samAction text="Process pending vectors" [samDisabled]="busy()" (tap)="drain()"></Button>
+          <Button samButton="secondary" samAction text="Rebuild Index" [samDisabled]="busy()" (tap)="rebuild()"></Button>
+          <Button samButton="secondary" samAction text="Retry failures" [samDisabled]="busy()" (tap)="retry()"></Button>
+          <Button samButton="secondary" samAction text="Reindex stale" [samDisabled]="busy()" (tap)="stale()"></Button>
+          <Button samButton="danger" samAction text="Reset Test Corpus" [samDisabled]="busy()" (tap)="reset()"></Button>
+          <Button samButton="danger" samAction text="Clear Lab Index" [samDisabled]="busy()" (tap)="clear()"></Button>
+        </FlexboxLayout>
+        <Label samText="meta" text="Reset restores fixture sources and removes manual lab sources. Clear removes search projections and preserves lab sources. Installation stays in Embeddings Lab." textWrap="true"></Label>
+        <Label samText="body" text="Document batch size (1–16; default 1)" marginTop="16"></Label>
+        <TextField samField accessibilityLabel="Document batch size" keyboardType="number" [text]="batchSize()" (textChange)="batchSize.set(text($event))"></TextField>
+        @if(stats();as s){
+          <Label samText="code" [text]="'Items ' + s.total + ' · lexical ' + s.lexical + ' · stored vectors ' + s.vectors + ' · compatible ' + s.compatible" textWrap="true" marginTop="16"></Label>
+          <Label samText="code" [text]="'Pending ' + s.pending + ' · stale ' + s.stale + ' · failures ' + s.failed" textWrap="true"></Label>
+          <Label samText="code" [text]="s.lexicalBackend + ' / ' + s.vectorBackend + ' (exact cosine)'" textWrap="true"></Label>
+          <Label samText="meta" [text]="'Vector bytes ' + s.vectorBytes + ' · average ' + s.averageVectorBytes + '/vector. Shared DB ' + s.databaseBytes + ' bytes; occupied pages ' + s.databaseAllocatedBytes + ' bytes.'" textWrap="true"></Label>
+        }
+      </StackLayout>
+      <StackLayout samSurface="card" marginBottom="16">
+        <Label samText="heading" text="Search"></Label>
+        <Label samText="body" text="Query"></Label>
+        <TextField samField accessibilityLabel="Retrieval query" [text]="query()" (textChange)="query.set(text($event))"></TextField>
+        @for(option of ['lexical','vector','hybrid'];track option){
+          <sam-choice kind="radio" [label]="option" [checked]="mode() === option" (checkedChange)="mode.set($any(option))"></sam-choice>
+        }
+        <sam-choice label="Allow explicitly reported degraded search" [checked]="degraded()" (checkedChange)="degraded.set($event)"></sam-choice>
+        <Label samText="body" text="Namespace (blank = lab subtree)" marginTop="16"></Label>
+        <TextField samField accessibilityLabel="Namespace filter" hint="lab.retrieval.facts" [text]="namespace()" (textChange)="namespace.set(text($event))"></TextField>
+        <sam-choice label="Include namespace descendants" [checked]="subtree()" (checkedChange)="subtree.set($event)"></sam-choice>
+        <Label samText="body" text="Type (optional)"></Label>
+        <TextField samField accessibilityLabel="Type filter" hint="person.fact" [text]="type()" (textChange)="type.set(text($event))"></TextField>
+        <Label samText="body" text="Final result limit (1–100)"></Label>
+        <TextField samField accessibilityLabel="Result limit" keyboardType="number" [text]="limit()" (textChange)="limit.set(text($event))"></TextField>
+        <Label samText="body" text="Candidates per modality (up to 500)"></Label>
+        <TextField samField accessibilityLabel="Candidate count" keyboardType="number" [text]="candidates()" (textChange)="candidates.set(text($event))"></TextField>
+        <Label samText="body" text="Created from / through (optional ISO date)"></Label>
+        <TextField samField accessibilityLabel="Created from" hint="2026-01-01" [text]="from()" (textChange)="from.set(text($event))"></TextField>
+        <TextField samField accessibilityLabel="Created through inclusive" hint="2026-12-31T23:59:59Z" [text]="to()" (textChange)="to.set(text($event))"></TextField>
+        <Label samText="body" text="Scope key filter (optional)"></Label>
+        <TextField samField accessibilityLabel="Scope key filter" hint="retrieval or retrieval.private" [text]="scopeFilter()" (textChange)="scopeFilter.set(text($event))"></TextField>
+        <sam-choice label="Use lab tester with private fixture grant" [checked]="privateAccess()" (checkedChange)="privateAccess.set($event)"></sam-choice>
+        <Label samText="meta" text="The default lab caller cannot see private fixtures. Scope filters only narrow the selected fixture caller's grants." textWrap="true"></Label>
+        <FlexboxLayout samActions marginTop="16"><Button samButton="primary" samAction text="Search" [samDisabled]="busy()" (tap)="search()"></Button></FlexboxLayout>
+        @if(response();as r){
+          <Label samText="body" [text]="'Requested ' + r.requestedMode + ' · used ' + r.actualMode + ' · ' + r.results.length + ' results · ' + r.durationMs + ' ms'" textWrap="true"></Label>
+          @if(r.degradedReasons.length){<Label samText="body" [text]="'Degraded: ' + r.degradedReasons.join(', ')" textWrap="true"></Label>}
+          <FlexboxLayout samActions><Button samButton="ghost" samAction text="Search diagnostics" (tap)="expanded.set(expanded() === 'search' ? '' : 'search')"></Button></FlexboxLayout>
+          @if(expanded() === 'search'){
+            <Label samText="code" [text]="json({timings:r.timings,candidates:r.candidates,backends:r.backends,fingerprint:r.embeddingFingerprint,rrf:r.rrf})" textWrap="true"></Label>
+          }
+          @for(result of r.results;track result.item.id){
+            <StackLayout samSurface="inset" marginTop="16">
+              <Label samText="title" [text]="'#' + result.rank + ' · score ' + result.score.toFixed(6)" textWrap="true"></Label>
+              <Label samText="body" [text]="result.item.content" textWrap="true"></Label>
+              <Label samText="meta" [text]="result.item.namespace + ' / ' + result.item.type" textWrap="true"></Label>
+              <Label samText="meta" [text]="result.item.source.system + ':' + result.item.source.type + ':' + result.item.source.id" textWrap="true"></Label>
+              <Label samText="meta" [text]="'Created ' + date(result.item.createdAt)" textWrap="true"></Label>
+              @if(result.lexical;as l){<Label samText="code" [text]="'Lexical #' + l.rank + ' · ' + l.score.toFixed(6) + ' (' + l.scoreKind + ')'" textWrap="true"></Label>}
+              @if(result.vector;as v){<Label samText="code" [text]="'Vector #' + v.rank + ' · cosine ' + v.similarity.toFixed(6)" textWrap="true"></Label>}
+              <FlexboxLayout samActions><Button samButton="ghost" samAction text="Provenance / details" (tap)="expanded.set(expanded() === result.item.id ? '' : result.item.id)"></Button></FlexboxLayout>
+              @if(expanded() === result.item.id){<Label samText="code" [text]="json(result.item)" textWrap="true"></Label>}
+            </StackLayout>
+          }@empty{<Label samText="body" text="No visible matching candidates. Check namespace, type, dates, scope grants and indexing states." textWrap="true"></Label>}
+        }
+      </StackLayout>
+      <StackLayout samSurface="card" marginBottom="16">
+        <Label samText="heading" text="Manual item"></Label>
+        <Label samText="body" text="Namespace"></Label><TextField samField accessibilityLabel="Item namespace" [text]="manualNamespace()" (textChange)="manualNamespace.set(text($event))"></TextField>
+        <Label samText="body" text="Type"></Label><TextField samField accessibilityLabel="Item type" [text]="manualType()" (textChange)="manualType.set(text($event))"></TextField>
+        <Label samText="body" text="Source ID (stable index ID derives from this)"></Label><TextField samField accessibilityLabel="Item source ID" [text]="sourceId()" (textChange)="sourceId.set(text($event))"></TextField>
+        <Label samText="body" text="Searchable content"></Label><TextView samField [samFieldMinHeight]="120" accessibilityLabel="Item content" [text]="content()" (textChange)="content.set(text($event))"></TextView>
+        <Label samText="body" text="Created / updated timestamp (optional epoch milliseconds)"></Label>
+        <TextField samField accessibilityLabel="Item created timestamp" [text]="createdAt()" (textChange)="createdAt.set(text($event))"></TextField>
+        <TextField samField accessibilityLabel="Item updated timestamp" [text]="updatedAt()" (textChange)="updatedAt.set(text($event))"></TextField>
+        <Label samText="body" text="Metadata JSON (optional)"></Label><TextView samField accessibilityLabel="Item metadata JSON" [text]="metadata()" (textChange)="metadata.set(text($event))"></TextView>
+        <sam-choice label="Private lab fixture scope" [checked]="manualPrivate()" (checkedChange)="manualPrivate.set($event)"></sam-choice>
+        <FlexboxLayout samActions marginTop="16">
+          <Button samButton="primary" samAction text="Index" [samDisabled]="busy()" (tap)="save()"></Button>
+          <Button samButton="secondary" samAction text="Update" [samDisabled]="busy()" (tap)="save()"></Button>
+          <Button samButton="danger" samAction text="Delete" [samDisabled]="busy()" (tap)="delete()"></Button>
+          <Button samButton="ghost" samAction [text]="expanded() === 'sources' ? 'Hide source items' : 'Browse source items'" (tap)="expanded.set(expanded() === 'sources' ? '' : 'sources')"></Button>
+        </FlexboxLayout>
+        @if(selected();as item){<Label samText="code" [text]="json({id:item.id,hash:item.contentHash,lexical:item.lexicalState,vector:item.vectorState,fingerprint:item.embeddingFingerprint,error:item.failure,revision:item.revision})" textWrap="true"></Label>}
+        @if(expanded() === 'sources'){
+          @for(item of sources();track item.id){<FlexboxLayout samActions><Button samButton="ghost" samAction [text]="item.source.id" [samDisabled]="busy()" (tap)="edit(item)"></Button></FlexboxLayout>}
+        }
+      </StackLayout>
+      <StackLayout samSurface="card" marginBottom="16">
+        <Label samText="heading" text="Evaluation and performance"></Label>
+        <Label samText="body" text="15 labelled queries: English, Spanish, cross-language, hard negatives and exact identifiers. Missing modalities are reported as unavailable." textWrap="true"></Label>
+        <FlexboxLayout samActions marginTop="16">
+          <Button samButton="primary" samAction text="Run evaluation" [samDisabled]="busy()" (tap)="evaluate()"></Button>
+          <Button samButton="secondary" samAction text="Indexing benchmark" [samDisabled]="busy()" (tap)="indexBenchmark()"></Button>
+          <Button samButton="secondary" samAction text="Benchmark 100" [samDisabled]="busy()" (tap)="benchmark(100)"></Button>
+          <Button samButton="secondary" samAction text="Benchmark 1,000" [samDisabled]="busy()" (tap)="benchmark(1000)"></Button>
+          <Button samButton="secondary" samAction text="Benchmark 10,000" [samDisabled]="busy()" (tap)="benchmark(10000)"></Button>
+          <Button samButton="ghost" samAction text="Internal diagnostics" [samDisabled]="busy()" (tap)="showDiagnostics()"></Button>
+        </FlexboxLayout>
+        <Label samText="meta" text="Indexing benchmark uses the modest lab corpus and real embeddings. Backend benchmarks use synthetic 1024-dimensional vectors, seven measured searches per mode, and no model inference. The 10,000-item setup can take time. Cancel leaves valid state." textWrap="true"></Label>
+        @if(report()){<Label samText="code" [text]="report()" textWrap="true" marginTop="16"></Label>}
+      </StackLayout>
+    </StackLayout>
+  </ScrollView>
+  @if(drawer.open()){<ns-drawer rowSpan="2" active="retrieval"></ns-drawer>}
+</GridLayout>

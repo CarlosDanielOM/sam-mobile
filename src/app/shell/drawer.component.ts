@@ -13,7 +13,7 @@ import { DrawerService } from './drawer.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DrawerComponent implements OnDestroy {
-  readonly active = input.required<'home' | 'providers' | 'agents' | 'embeddings' | 'ui-kit' | 'appearance'>();
+  readonly active = input.required<'home' | 'providers' | 'agents' | 'embeddings' | 'retrieval' | 'ui-kit' | 'appearance'>();
   readonly drawer = inject(DrawerService);
   readonly sessions = inject(SessionStore);
   private readonly router = inject(RouterExtensions);
@@ -76,6 +76,7 @@ export class DrawerComponent implements OnDestroy {
     this.go('/embeddings', 'embeddings');
   }
 
+  goRetrieval(): void { void this.go('/retrieval', 'retrieval'); }
 
   goUiKit(): void {
     this.go('/ui-kit', 'ui-kit');
@@ -96,7 +97,7 @@ export class DrawerComponent implements OnDestroy {
     if (this.sessions.restore(id)) this.goHome();
   }
 
-  private async go(path: string, key: 'home' | 'providers' | 'agents' | 'embeddings' | 'ui-kit' | 'appearance'): Promise<void> {
+  private async go(path: string, key: 'home' | 'providers' | 'agents' | 'embeddings' | 'retrieval' | 'ui-kit' | 'appearance'): Promise<void> {
     if (!await this.close()) return;
     if (this.active() === key) {
       return;

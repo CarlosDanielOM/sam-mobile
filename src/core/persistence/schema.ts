@@ -1,4 +1,6 @@
-export const SCHEMA_VERSION = 5;
+import { RETRIEVAL_SCHEMA } from '../retrieval/schema';
+
+export const SCHEMA_VERSION = 6;
 
 const USAGE_COLUMNS = `
   reported_input_tokens INTEGER,
@@ -679,4 +681,5 @@ export const MIGRATIONS: { version: number; statements: string[] }[] = [
       `CREATE INDEX idx_conversations_parent ON conversations(parent_session_id)`,
     ],
   },
+  { version: 6, statements: RETRIEVAL_SCHEMA },
 ];

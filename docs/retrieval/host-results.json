@@ -1,0 +1,1581 @@
+{
+  "platform": "linux",
+  "architecture": "x64",
+  "node": "v26.4.0",
+  "date": "2026-09-12T08:02:28.340Z",
+  "note": "Host SQLite. Android worker and real-model evaluations require a device.",
+  "reports": [
+    {
+      "kind": "synthetic_backend",
+      "scale": 100,
+      "dimensions": 1024,
+      "repetitions": 7,
+      "setupMs": 104,
+      "backend": "exact_flat",
+      "lexicalBackend": "fts5_unicode61",
+      "metrics": [
+        {
+          "mode": "lexical",
+          "p50Ms": 1,
+          "p95Ms": 2,
+          "candidateCounts": [
+            50,
+            50,
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        },
+        {
+          "mode": "vector",
+          "p50Ms": 10,
+          "p95Ms": 11,
+          "candidateCounts": [
+            50,
+            50,
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        },
+        {
+          "mode": "hybrid",
+          "p50Ms": 10,
+          "p95Ms": 11,
+          "candidateCounts": [
+            74,
+            75,
+            76,
+            71,
+            72,
+            74,
+            72
+          ]
+        }
+      ],
+      "storage": {
+        "total": 100,
+        "lexical": 100,
+        "vectors": 100,
+        "compatible": 100,
+        "pending": 0,
+        "stale": 0,
+        "failed": 0,
+        "vectorBytes": 409600,
+        "databaseBytes": 667648,
+        "databaseAllocatedBytes": 667648,
+        "averageVectorBytes": 4096,
+        "lexicalBackend": "fts5_unicode61",
+        "vectorBackend": "exact_flat"
+      },
+      "databaseGrowthBytes": 589824,
+      "memoryBeforeBytes": 129699840,
+      "memoryAfterBytes": 148574208,
+      "notes": [
+        "No model inference: deterministic normalized vectors. Exact scan, not ANN.",
+        "Database bytes cover the shared database; growth includes projection overhead. Freed pages may be reused.",
+        "Temporary benchmark rows are removed after measurement; no VACUUM or source-data deletion.",
+        "Compare Android worker results with host results separately; native BLOB bridge overhead is platform-dependent."
+      ]
+    },
+    {
+      "kind": "synthetic_backend",
+      "scale": 1000,
+      "dimensions": 1024,
+      "repetitions": 7,
+      "setupMs": 821,
+      "backend": "exact_flat",
+      "lexicalBackend": "fts5_unicode61",
+      "metrics": [
+        {
+          "mode": "lexical",
+          "p50Ms": 3,
+          "p95Ms": 4,
+          "candidateCounts": [
+            50,
+            50,
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        },
+        {
+          "mode": "vector",
+          "p50Ms": 87,
+          "p95Ms": 91,
+          "candidateCounts": [
+            50,
+            50,
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        },
+        {
+          "mode": "hybrid",
+          "p50Ms": 89,
+          "p95Ms": 92,
+          "candidateCounts": [
+            95,
+            96,
+            99,
+            98,
+            96,
+            92,
+            98
+          ]
+        }
+      ],
+      "storage": {
+        "total": 1000,
+        "lexical": 1000,
+        "vectors": 1000,
+        "compatible": 1000,
+        "pending": 0,
+        "stale": 0,
+        "failed": 0,
+        "vectorBytes": 4096000,
+        "databaseBytes": 5955584,
+        "databaseAllocatedBytes": 5955584,
+        "averageVectorBytes": 4096,
+        "lexicalBackend": "fts5_unicode61",
+        "vectorBackend": "exact_flat"
+      },
+      "databaseGrowthBytes": 5287936,
+      "memoryBeforeBytes": 148574208,
+      "memoryAfterBytes": 156700672,
+      "notes": [
+        "No model inference: deterministic normalized vectors. Exact scan, not ANN.",
+        "Database bytes cover the shared database; growth includes projection overhead. Freed pages may be reused.",
+        "Temporary benchmark rows are removed after measurement; no VACUUM or source-data deletion.",
+        "Compare Android worker results with host results separately; native BLOB bridge overhead is platform-dependent."
+      ]
+    },
+    {
+      "kind": "synthetic_backend",
+      "scale": 10000,
+      "dimensions": 1024,
+      "repetitions": 7,
+      "setupMs": 15761,
+      "backend": "exact_flat",
+      "lexicalBackend": "fts5_unicode61",
+      "metrics": [
+        {
+          "mode": "lexical",
+          "p50Ms": 20,
+          "p95Ms": 21,
+          "candidateCounts": [
+            50,
+            50,
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        },
+        {
+          "mode": "vector",
+          "p50Ms": 854,
+          "p95Ms": 882,
+          "candidateCounts": [
+            50,
+            50,
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        },
+        {
+          "mode": "hybrid",
+          "p50Ms": 878,
+          "p95Ms": 889,
+          "candidateCounts": [
+            98,
+            99,
+            99,
+            99,
+            99,
+            98,
+            99
+          ]
+        }
+      ],
+      "storage": {
+        "total": 10000,
+        "lexical": 10000,
+        "vectors": 10000,
+        "compatible": 10000,
+        "pending": 0,
+        "stale": 0,
+        "failed": 0,
+        "vectorBytes": 40960000,
+        "databaseBytes": 58834944,
+        "databaseAllocatedBytes": 58834944,
+        "averageVectorBytes": 4096,
+        "lexicalBackend": "fts5_unicode61",
+        "vectorBackend": "exact_flat"
+      },
+      "databaseGrowthBytes": 52879360,
+      "memoryBeforeBytes": 180293632,
+      "memoryAfterBytes": 213979136,
+      "notes": [
+        "No model inference: deterministic normalized vectors. Exact scan, not ANN.",
+        "Database bytes cover the shared database; growth includes projection overhead. Freed pages may be reused.",
+        "Temporary benchmark rows are removed after measurement; no VACUUM or source-data deletion.",
+        "Compare Android worker results with host results separately; native BLOB bridge overhead is platform-dependent."
+      ]
+    },
+    {
+      "kind": "host_lexical_evaluation",
+      "backend": "fts5",
+      "corpusVersion": 1,
+      "summary": [
+        {
+          "mode": "lexical",
+          "queries": 15,
+          "unavailable": 0,
+          "top1": 0.6666666666666666,
+          "recall3": 1,
+          "recall5": 1,
+          "mrr": 0.8111111111111111
+        },
+        {
+          "mode": "vector",
+          "queries": 0,
+          "unavailable": 15,
+          "top1": null,
+          "recall3": null,
+          "recall5": null,
+          "mrr": null
+        },
+        {
+          "mode": "hybrid",
+          "queries": 0,
+          "unavailable": 15,
+          "top1": null,
+          "recall3": null,
+          "recall5": null,
+          "mrr": null
+        }
+      ],
+      "rows": [
+        {
+          "id": "employment",
+          "category": "hard-negative",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:alex-visit",
+            "retrieval-lab:bank-river",
+            "retrieval-lab:alex-job"
+          ],
+          "firstRelevantRank": 3,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "residence",
+          "category": "es-es",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:lucia-home",
+            "retrieval-lab:lucia-trip",
+            "retrieval-lab:alejandro-job",
+            "retrieval-lab:refund-es"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "cross-home",
+          "category": "en-es",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:alex-visit",
+            "retrieval-lab:lucia-home",
+            "retrieval-lab:lucia-trip",
+            "retrieval-lab:ben-home",
+            "retrieval-lab:bank-river"
+          ],
+          "firstRelevantRank": 2,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "cross-ben",
+          "category": "es-en",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:lucia-home",
+            "retrieval-lab:ben-home",
+            "retrieval-lab:ben-trip"
+          ],
+          "firstRelevantRank": 2,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "allergy",
+          "category": "en-es",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:ana-allergy",
+            "retrieval-lab:ana-food",
+            "retrieval-lab:password-negative",
+            "retrieval-lab:library-code",
+            "retrieval-lab:omar-bike"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "commute",
+          "category": "en-en",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:alex-visit",
+            "retrieval-lab:omar-bike",
+            "retrieval-lab:omar-car",
+            "retrieval-lab:library-code",
+            "retrieval-lab:python-code"
+          ],
+          "firstRelevantRank": 2,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "commute-es",
+          "category": "es-en",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:alejandro-job",
+            "retrieval-lab:lucia-trip",
+            "retrieval-lab:omar-bike",
+            "retrieval-lab:omar-car",
+            "retrieval-lab:train"
+          ],
+          "firstRelevantRank": 3,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "account",
+          "category": "en-en",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:password-reset",
+            "retrieval-lab:password-negative",
+            "retrieval-lab:ben-home",
+            "retrieval-lab:bank-river",
+            "retrieval-lab:omar-car"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "library",
+          "category": "es-es",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:library-hours",
+            "retrieval-lab:ana-food",
+            "retrieval-lab:train",
+            "retrieval-lab:dentist",
+            "retrieval-lab:invoice-es"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "river",
+          "category": "hard-negative",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:bank-river",
+            "retrieval-lab:bank-money",
+            "retrieval-lab:meeting",
+            "retrieval-lab:train-negative",
+            "retrieval-lab:invoice-42"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "invoice",
+          "category": "exact",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:invoice-42"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "device",
+          "category": "exact",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:device-a56"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "amount",
+          "category": "exact",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:invoice-42"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "date",
+          "category": "exact",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:meeting"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "names",
+          "category": "hard-negative",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:maria",
+            "retrieval-lab:mario",
+            "retrieval-lab:bank-money",
+            "retrieval-lab:bank-river",
+            "retrieval-lab:jaguar-car"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "employment",
+          "category": "hard-negative",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "residence",
+          "category": "es-es",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "cross-home",
+          "category": "en-es",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "cross-ben",
+          "category": "es-en",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "allergy",
+          "category": "en-es",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "commute",
+          "category": "en-en",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "commute-es",
+          "category": "es-en",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "account",
+          "category": "en-en",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "library",
+          "category": "es-es",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "river",
+          "category": "hard-negative",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "invoice",
+          "category": "exact",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "device",
+          "category": "exact",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "amount",
+          "category": "exact",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "date",
+          "category": "exact",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "names",
+          "category": "hard-negative",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "employment",
+          "category": "hard-negative",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "residence",
+          "category": "es-es",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "cross-home",
+          "category": "en-es",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "cross-ben",
+          "category": "es-en",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "allergy",
+          "category": "en-es",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "commute",
+          "category": "en-en",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "commute-es",
+          "category": "es-en",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "account",
+          "category": "en-en",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "library",
+          "category": "es-es",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "river",
+          "category": "hard-negative",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "invoice",
+          "category": "exact",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "device",
+          "category": "exact",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "amount",
+          "category": "exact",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "date",
+          "category": "exact",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "names",
+          "category": "hard-negative",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        }
+      ]
+    },
+    {
+      "kind": "synthetic_backend",
+      "scale": 100,
+      "dimensions": 1024,
+      "repetitions": 7,
+      "setupMs": 73,
+      "backend": "exact_flat",
+      "lexicalBackend": "fts4_unicode61",
+      "metrics": [
+        {
+          "mode": "lexical",
+          "p50Ms": 3,
+          "p95Ms": 6,
+          "candidateCounts": [
+            50,
+            50,
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        },
+        {
+          "mode": "vector",
+          "p50Ms": 9,
+          "p95Ms": 9,
+          "candidateCounts": [
+            50,
+            50,
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        },
+        {
+          "mode": "hybrid",
+          "p50Ms": 10,
+          "p95Ms": 13,
+          "candidateCounts": [
+            74,
+            75,
+            76,
+            71,
+            72,
+            74,
+            72
+          ]
+        }
+      ],
+      "storage": {
+        "total": 100,
+        "lexical": 100,
+        "vectors": 100,
+        "compatible": 100,
+        "pending": 0,
+        "stale": 0,
+        "failed": 0,
+        "vectorBytes": 409600,
+        "databaseBytes": 667648,
+        "databaseAllocatedBytes": 667648,
+        "averageVectorBytes": 4096,
+        "lexicalBackend": "fts4_unicode61",
+        "vectorBackend": "exact_flat"
+      },
+      "databaseGrowthBytes": 585728,
+      "memoryBeforeBytes": 318443520,
+      "memoryAfterBytes": 318443520,
+      "notes": [
+        "No model inference: deterministic normalized vectors. Exact scan, not ANN.",
+        "Database bytes cover the shared database; growth includes projection overhead. Freed pages may be reused.",
+        "Temporary benchmark rows are removed after measurement; no VACUUM or source-data deletion.",
+        "Compare Android worker results with host results separately; native BLOB bridge overhead is platform-dependent."
+      ]
+    },
+    {
+      "kind": "synthetic_backend",
+      "scale": 1000,
+      "dimensions": 1024,
+      "repetitions": 7,
+      "setupMs": 776,
+      "backend": "exact_flat",
+      "lexicalBackend": "fts4_unicode61",
+      "metrics": [
+        {
+          "mode": "lexical",
+          "p50Ms": 19,
+          "p95Ms": 26,
+          "candidateCounts": [
+            50,
+            50,
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        },
+        {
+          "mode": "vector",
+          "p50Ms": 78,
+          "p95Ms": 81,
+          "candidateCounts": [
+            50,
+            50,
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        },
+        {
+          "mode": "hybrid",
+          "p50Ms": 96,
+          "p95Ms": 98,
+          "candidateCounts": [
+            95,
+            96,
+            99,
+            98,
+            96,
+            92,
+            98
+          ]
+        }
+      ],
+      "storage": {
+        "total": 1000,
+        "lexical": 1000,
+        "vectors": 1000,
+        "compatible": 1000,
+        "pending": 0,
+        "stale": 0,
+        "failed": 0,
+        "vectorBytes": 4096000,
+        "databaseBytes": 5971968,
+        "databaseAllocatedBytes": 5971968,
+        "averageVectorBytes": 4096,
+        "lexicalBackend": "fts4_unicode61",
+        "vectorBackend": "exact_flat"
+      },
+      "databaseGrowthBytes": 5304320,
+      "memoryBeforeBytes": 318443520,
+      "memoryAfterBytes": 320802816,
+      "notes": [
+        "No model inference: deterministic normalized vectors. Exact scan, not ANN.",
+        "Database bytes cover the shared database; growth includes projection overhead. Freed pages may be reused.",
+        "Temporary benchmark rows are removed after measurement; no VACUUM or source-data deletion.",
+        "Compare Android worker results with host results separately; native BLOB bridge overhead is platform-dependent."
+      ]
+    },
+    {
+      "kind": "synthetic_backend",
+      "scale": 10000,
+      "dimensions": 1024,
+      "repetitions": 7,
+      "setupMs": 18013,
+      "backend": "exact_flat",
+      "lexicalBackend": "fts4_unicode61",
+      "metrics": [
+        {
+          "mode": "lexical",
+          "p50Ms": 687,
+          "p95Ms": 716,
+          "candidateCounts": [
+            50,
+            50,
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        },
+        {
+          "mode": "vector",
+          "p50Ms": 791,
+          "p95Ms": 820,
+          "candidateCounts": [
+            50,
+            50,
+            50,
+            50,
+            50,
+            50,
+            50
+          ]
+        },
+        {
+          "mode": "hybrid",
+          "p50Ms": 1467,
+          "p95Ms": 1720,
+          "candidateCounts": [
+            98,
+            99,
+            99,
+            99,
+            99,
+            98,
+            99
+          ]
+        }
+      ],
+      "storage": {
+        "total": 10000,
+        "lexical": 10000,
+        "vectors": 10000,
+        "compatible": 10000,
+        "pending": 0,
+        "stale": 0,
+        "failed": 0,
+        "vectorBytes": 40960000,
+        "databaseBytes": 58880000,
+        "databaseAllocatedBytes": 58880000,
+        "averageVectorBytes": 4096,
+        "lexicalBackend": "fts4_unicode61",
+        "vectorBackend": "exact_flat"
+      },
+      "databaseGrowthBytes": 52908032,
+      "memoryBeforeBytes": 320802816,
+      "memoryAfterBytes": 333443072,
+      "notes": [
+        "No model inference: deterministic normalized vectors. Exact scan, not ANN.",
+        "Database bytes cover the shared database; growth includes projection overhead. Freed pages may be reused.",
+        "Temporary benchmark rows are removed after measurement; no VACUUM or source-data deletion.",
+        "Compare Android worker results with host results separately; native BLOB bridge overhead is platform-dependent."
+      ]
+    },
+    {
+      "kind": "host_lexical_evaluation",
+      "backend": "fts4",
+      "corpusVersion": 1,
+      "summary": [
+        {
+          "mode": "lexical",
+          "queries": 15,
+          "unavailable": 0,
+          "top1": 0.6,
+          "recall3": 0.9333333333333333,
+          "recall5": 1,
+          "mrr": 0.7688888888888888
+        },
+        {
+          "mode": "vector",
+          "queries": 0,
+          "unavailable": 15,
+          "top1": null,
+          "recall3": null,
+          "recall5": null,
+          "mrr": null
+        },
+        {
+          "mode": "hybrid",
+          "queries": 0,
+          "unavailable": 15,
+          "top1": null,
+          "recall3": null,
+          "recall5": null,
+          "mrr": null
+        }
+      ],
+      "rows": [
+        {
+          "id": "employment",
+          "category": "hard-negative",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:alex-visit",
+            "retrieval-lab:bank-river",
+            "retrieval-lab:alex-job"
+          ],
+          "firstRelevantRank": 3,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "residence",
+          "category": "es-es",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:lucia-home",
+            "retrieval-lab:lucia-trip",
+            "retrieval-lab:alejandro-job",
+            "retrieval-lab:refund-es"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "cross-home",
+          "category": "en-es",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:alex-visit",
+            "retrieval-lab:lucia-home",
+            "retrieval-lab:lucia-trip",
+            "retrieval-lab:bank-river",
+            "retrieval-lab:ben-home"
+          ],
+          "firstRelevantRank": 2,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "cross-ben",
+          "category": "es-en",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:lucia-home",
+            "retrieval-lab:ben-home",
+            "retrieval-lab:ben-trip"
+          ],
+          "firstRelevantRank": 2,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "allergy",
+          "category": "en-es",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:password-negative",
+            "retrieval-lab:ana-allergy",
+            "retrieval-lab:ana-food",
+            "retrieval-lab:alex-visit",
+            "retrieval-lab:library-code"
+          ],
+          "firstRelevantRank": 2,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "commute",
+          "category": "en-en",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:alex-visit",
+            "retrieval-lab:omar-bike",
+            "retrieval-lab:omar-car",
+            "retrieval-lab:library-code",
+            "retrieval-lab:password-negative"
+          ],
+          "firstRelevantRank": 2,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "commute-es",
+          "category": "es-en",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:train",
+            "retrieval-lab:omar-car",
+            "retrieval-lab:lucia-trip",
+            "retrieval-lab:alejandro-job",
+            "retrieval-lab:omar-bike"
+          ],
+          "firstRelevantRank": 5,
+          "recall3": 0,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "account",
+          "category": "en-en",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:password-reset",
+            "retrieval-lab:password-negative",
+            "retrieval-lab:bank-river",
+            "retrieval-lab:ben-home",
+            "retrieval-lab:jaguar-animal"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "library",
+          "category": "es-es",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:library-hours",
+            "retrieval-lab:train",
+            "retrieval-lab:ana-food",
+            "retrieval-lab:dentist",
+            "retrieval-lab:invoice-es"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "river",
+          "category": "hard-negative",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:bank-river",
+            "retrieval-lab:bank-money",
+            "retrieval-lab:meeting",
+            "retrieval-lab:invoice-42",
+            "retrieval-lab:invoice-43"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "invoice",
+          "category": "exact",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:invoice-42"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "device",
+          "category": "exact",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:device-a56"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "amount",
+          "category": "exact",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:invoice-42"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "date",
+          "category": "exact",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:meeting"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "names",
+          "category": "hard-negative",
+          "mode": "lexical",
+          "ids": [
+            "retrieval-lab:maria",
+            "retrieval-lab:mario",
+            "retrieval-lab:alex-visit",
+            "retrieval-lab:bank-money",
+            "retrieval-lab:bank-river"
+          ],
+          "firstRelevantRank": 1,
+          "recall3": 1,
+          "recall5": 1,
+          "actualMode": "lexical"
+        },
+        {
+          "id": "employment",
+          "category": "hard-negative",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "residence",
+          "category": "es-es",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "cross-home",
+          "category": "en-es",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "cross-ben",
+          "category": "es-en",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "allergy",
+          "category": "en-es",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "commute",
+          "category": "en-en",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "commute-es",
+          "category": "es-en",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "account",
+          "category": "en-en",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "library",
+          "category": "es-es",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "river",
+          "category": "hard-negative",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "invoice",
+          "category": "exact",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "device",
+          "category": "exact",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "amount",
+          "category": "exact",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "date",
+          "category": "exact",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "names",
+          "category": "hard-negative",
+          "mode": "vector",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "employment",
+          "category": "hard-negative",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "residence",
+          "category": "es-es",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "cross-home",
+          "category": "en-es",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "cross-ben",
+          "category": "es-en",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "allergy",
+          "category": "en-es",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "commute",
+          "category": "en-en",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "commute-es",
+          "category": "es-en",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "account",
+          "category": "en-en",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "library",
+          "category": "es-es",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "river",
+          "category": "hard-negative",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "invoice",
+          "category": "exact",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "device",
+          "category": "exact",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "amount",
+          "category": "exact",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "date",
+          "category": "exact",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        },
+        {
+          "id": "names",
+          "category": "hard-negative",
+          "mode": "hybrid",
+          "ids": [],
+          "firstRelevantRank": null,
+          "recall3": 0,
+          "recall5": 0,
+          "error": "embedding_unavailable"
+        }
+      ]
+    }
+  ]
+}

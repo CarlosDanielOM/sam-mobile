@@ -142,6 +142,9 @@ export class SqliteStore implements PersistenceApi {
     return this.db;
   }
 
+  /** Initializes the shared migration owner before a background retrieval connection opens. */
+  prepareRetrievalDatabase(): string { return String(this.conn().getPath()); }
+
   private migrate(db: any): void {
     // Table-rebuild migrations (v3+) require foreign key enforcement to be off.
     // The pragma cannot change inside a transaction, so it is toggled around the

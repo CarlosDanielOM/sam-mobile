@@ -26,6 +26,7 @@
           textWrap="true"
           (tap)="goEmbeddings()"
         ></Button>
+        <Button samPress [class]="active() === 'retrieval' ? 'sam-primary' : 'sam-choice'" text="Retrieval Lab" minHeight="48" textWrap="true" (tap)="goRetrieval()"></Button>
         <Button samPress
           [class]="active() === 'ui-kit' ? 'sam-primary' : 'sam-choice'"
           text="UI Kit" minHeight="48" textWrap="true" (tap)="goUiKit()"

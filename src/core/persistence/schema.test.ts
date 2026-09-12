@@ -3,10 +3,10 @@ import { test } from 'node:test';
 import { MIGRATIONS, SCHEMA_VERSION } from './schema.ts';
 
 test('telemetry schema is a forward migration chain with normalized hierarchy and indexes', () => {
-  assert.equal(SCHEMA_VERSION, 5);
+  assert.equal(SCHEMA_VERSION, 6);
   assert.deepEqual(
     MIGRATIONS.map((migration) => migration.version),
-    [1, 2, 3, 4, 5],
+    [1, 2, 3, 4, 5, 6],
   );
   const v2 = MIGRATIONS[1].statements.join('\n');
   for (const table of [
