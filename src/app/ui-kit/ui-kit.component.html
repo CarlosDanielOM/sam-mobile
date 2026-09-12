@@ -1,0 +1,278 @@
+<GridLayout samThemeScope rows="auto, *" [backgroundColor]="ui.tokens().background" (layoutChanged)="layout($event)">
+  <GridLayout row="0" columns="auto, *, auto" class="kit-header">
+    <Button col="0" samButton="secondary" text="Menu" accessibilityLabel="Open menu" (tap)="drawer.show()"></Button>
+    <Label col="1" samText="title" text="UI Kit" class="kit-header-title" verticalAlignment="center"></Label>
+    <Button col="2" samButton="ghost" class="kit-mode" [text]="ui.mode() === 'dark' ? 'Light' : 'Dark'"
+      [accessibilityLabel]="ui.mode() === 'dark' ? 'Preview light mode' : 'Preview dark mode'"
+      (tap)="ui.mode.set(ui.mode() === 'dark' ? 'light' : 'dark')"></Button>
+  </GridLayout>
+  <ScrollView row="1">
+    <StackLayout class="kit-content" width="100%" maxWidth="760" horizontalAlignment="center">
+      <GridLayout [columns]="narrow() ? '*' : '*, auto'" [rows]="narrow() ? 'auto, auto' : 'auto'" class="kit-topline">
+        <Label col="0" samText="meta" text="SAM / INTERLUDE" [samMuted]="true"></Label>
+        <Label [col]="narrow() ? 0 : 1" [row]="narrow() ? 1 : 0" samText="meta" text="OFFICIAL" [samMuted]="true"></Label>
+      </GridLayout>
+      <GridLayout columns="*, *" rows="auto, auto, auto" class="kit-designs">
+        @for (design of directions; track design.id; let i = $index) {
+          <Button [row]="i < 2 ? 0 : i < 4 ? 1 : 2" [col]="i % 2" [colSpan]="i === 4 ? 2 : 1" class="kit-design-tab"
+            [samButton]="ui.direction() === design.id ? 'primary' : 'secondary'"
+            [text]="design.number + '  ' + design.name"
+            [accessibilityLabel]="design.name + (ui.direction() === design.id ? ', selected' : '')"
+            (tap)="choose(design.id)"></Button>
+        }
+      </GridLayout>
+
+      @if (ui.direction() === 'interlude') {
+        <StackLayout samSurface="inset" class="kit-appearance">
+          <GridLayout [columns]="narrow() ? '*' : '*, *'" [rows]="narrow() ? 'auto, auto' : 'auto'" marginBottom="12">
+            <Button col="0" [samButton]="ui.colorMode() === 'color' ? 'primary' : 'secondary'"
+              text="Color duet" [marginRight]="narrow() ? 0 : 4" [marginBottom]="narrow() ? 8 : 0"
+              [accessibilityLabel]="'Color duet' + (ui.colorMode() === 'color' ? ', selected' : '')"
+              (tap)="ui.colorMode.set('color')"></Button>
+            <Button [col]="narrow() ? 0 : 1" [row]="narrow() ? 1 : 0" [samButton]="ui.colorMode() === 'mono' ? 'primary' : 'secondary'"
+              text="Monochrome" [marginLeft]="narrow() ? 0 : 4"
+              [accessibilityLabel]="'Monochrome' + (ui.colorMode() === 'mono' ? ', selected' : '')"
+              (tap)="ui.colorMode.set('mono')"></Button>
+          </GridLayout>
+          <GridLayout columns="*, auto">
+            <StackLayout col="0" marginRight="12" verticalAlignment="center">
+              <Label samText="body" text="Do not disturb"></Label>
+              <Label samText="meta" [samMuted]="true" text="Preview a quieter palette" marginTop="4"></Label>
+            </StackLayout>
+            <Switch col="1" minWidth="48" minHeight="48" verticalAlignment="center" [checked]="ui.doNotDisturb()" [color]="ui.tokens().secondaryAccent"
+              [backgroundColor]="ui.tokens().control" accessibilityLabel="Do not disturb palette preview"
+              (checkedChange)="ui.doNotDisturb.set(checkedValue($event))"></Switch>
+          </GridLayout>
+          <Label samText="meta" [samMuted]="true" marginTop="12" accessibilityLiveRegion="polite"
+            [text]="ui.doNotDisturb() ? 'DND preview is on. Grays now; your palette returns when it is off.' : ui.colorMode() === 'mono' ? 'Monochrome by choice. Same shapes, same character.' : 'Purple for creation. Cyan-blue for clarity.'"></Label>
+        </StackLayout>
+      }
+
+      <StackLayout samSurface="raised" class="kit-hero" [samReveal]="ui.direction() + ui.mode() + ui.effectiveColorMode()">
+        <GridLayout columns="*, auto">
+          <StackLayout col="0" verticalAlignment="center">
+            <Label samText="meta" [samAccent]="true" [text]="ui.design().number + ' / ' + ui.design().name.toUpperCase()"></Label>
+            <Label samText="meta" [samMuted]="true" [text]="ui.mode() === 'dark' ? 'NIGHT EDITION' : 'DAY EDITION'" marginTop="4"></Label>
+          </StackLayout>
+          @if (ui.direction() === 'facet') {
+            <GridLayout col="1" columns="auto, auto" rows="auto, auto" accessible="false">
+              <GridLayout col="0" row="0" width="34" height="30" class="kit-hex" [backgroundColor]="ui.tokens().accent" marginRight="3"></GridLayout>
+              <GridLayout col="1" row="0" width="34" height="30" class="kit-hex" [backgroundColor]="ui.tokens().control"></GridLayout>
+              <GridLayout col="0" row="1" colSpan="2" width="34" height="30" class="kit-hex" [backgroundColor]="ui.tokens().muted" marginTop="-3"></GridLayout>
+            </GridLayout>
+          } @else if (ui.direction() === 'interlude') {
+            <GridLayout col="1" columns="auto, auto" verticalAlignment="center" accessible="false">
+              <StackLayout col="0" width="20" height="46" borderRadius="10" [backgroundColor]="ui.tokens().accent" rotate="-12"></StackLayout>
+              <StackLayout col="1" width="20" height="46" borderRadius="10" marginLeft="10" [backgroundColor]="ui.tokens().secondaryAccent" rotate="12"></StackLayout>
+            </GridLayout>
+          } @else if (ui.direction() === 'ledger') {
+            <Label col="1" samText="display" text="Aa" [samAccent]="true" verticalAlignment="center"></Label>
+          } @else {
+            <GridLayout col="1" columns="auto, auto, auto" verticalAlignment="center" accessible="false">
+              @for (tone of [ui.tokens().control, ui.tokens().muted, ui.tokens().accent]; track $index) {
+                <StackLayout [col]="$index" width="16" [height]="24 + $index * 12" borderRadius="8" marginLeft="5"
+                  [backgroundColor]="tone" verticalAlignment="center"></StackLayout>
+              }
+            </GridLayout>
+          }
+        </GridLayout>
+        <Label samText="display" [text]="ui.design().title" class="kit-hero-copy"></Label>
+        <Label samText="body" [samMuted]="true" [text]="ui.direction() === 'interlude' && ui.effectiveColorMode() === 'mono' ? 'Soft curves. Editorial rhythm. The same character, in Quiet’s grays.' : ui.design().description" marginTop="10"></Label>
+        <StackLayout class="kit-rule" [backgroundColor]="ui.tokens().control"></StackLayout>
+        <Label samText="meta" [text]="ui.design().detail"></Label>
+        @if (ui.direction() === 'interlude') {
+          <GridLayout [columns]="narrow() ? '*' : '*, *'" [rows]="narrow() ? 'auto, auto' : 'auto'" marginTop="16">
+            <StackLayout col="0" samSurface="accent" [marginRight]="narrow() ? 0 : 4" [marginBottom]="narrow() ? 8 : 0">
+              <Label samText="meta" [samAccent]="true" text="01 / CREATE"></Label>
+              <Label samText="title" text="Make room" marginTop="6"></Label>
+            </StackLayout>
+            <StackLayout [col]="narrow() ? 0 : 1" [row]="narrow() ? 1 : 0" samSurface="support" [marginLeft]="narrow() ? 0 : 4">
+              <Label samText="meta" [samSupport]="true" text="02 / EXPLORE"></Label>
+              <Label samText="title" text="Find clarity" marginTop="6"></Label>
+            </StackLayout>
+          </GridLayout>
+        }
+      </StackLayout>
+
+      @if (ui.direction() === 'spectrum') {
+        <Label samText="meta" text="CHOOSE AN ACCENT" class="kit-label" [samMuted]="true"></Label>
+        <FlexboxLayout flexWrap="wrap" margin="-4 -4 16">
+          @for (accent of accents; track accent) {
+            <Button class="kit-swatch" [text]="(ui.accent() === accent ? '✓ ' : '') + accent"
+              [backgroundColor]="accentColor(accent)" [color]="ui.tokens().onAccent"
+              [borderColor]="ui.accent() === accent ? ui.tokens().text : accentColor(accent)"
+              [borderRadius]="ui.tokens().controlRadius" textWrap="true" textTransform="none" fontSize="12"
+              [accessibilityLabel]="accent + (ui.accent() === accent ? ', selected' : '')" (tap)="ui.accent.set(accent)"></Button>
+          }
+        </FlexboxLayout>
+      }
+
+      <GridLayout columns="*, *" rows="auto, auto">
+        @for (tab of sections; track tab.id; let i = $index) {
+          <Button [col]="i % 2" [row]="i < 2 ? 0 : 1" [samButton]="section() === tab.id ? 'primary' : 'ghost'" class="kit-tab" [text]="tab.title"
+            [accessibilityLabel]="tab.title + (section() === tab.id ? ', selected' : '')" (tap)="section.set(tab.id)"></Button>
+        }
+      </GridLayout>
+      @if (notice()) {
+        <StackLayout samSurface="inset" class="kit-notice">
+          <Label samText="body" [text]="notice()" accessibilityLiveRegion="polite"></Label>
+          <Button samButton="ghost" text="Dismiss" horizontalAlignment="left" (tap)="notice.set('')"></Button>
+        </StackLayout>
+      }
+
+      @if (section() === 'controls') {
+        <StackLayout samSurface="card" class="kit-section" samReveal>
+          <Label samText="meta" [samMuted]="true" text="01 / ACTIONS" class="kit-label"></Label>
+          <Label samText="heading" text="A clear next step." class="kit-section-title"></Label>
+          <FlexboxLayout samActions>
+            <Button samButton="primary" samAction [samBusy]="saving()" [text]="saving() ? 'Saving…' : 'Save preview'" (tap)="save()"></Button>
+            <Button samButton="secondary" samAction text="Open dialog" (tap)="showDialog()"></Button>
+            <Button samButton="ghost" samAction text="Not now" (tap)="notice.set('Secondary action selected. Nothing was changed.')"></Button>
+            <Button samButton="secondary" samAction [samDisabled]="true" text="Unavailable"></Button>
+          </FlexboxLayout>
+          <Label samText="meta" [samMuted]="true" text="Primary · secondary · quiet · disabled" marginTop="8"></Label>
+        </StackLayout>
+
+        <StackLayout samSurface="card" class="kit-section" samReveal>
+          <Label samText="meta" [samMuted]="true" text="02 / INPUTS" class="kit-label"></Label>
+          <Label samText="heading" text="Make yourself understood." class="kit-section-title"></Label>
+          <Label samText="body" text="Workspace name" class="kit-label"></Label>
+          <TextField samField [text]="name()" hint="Give it a name" accessibilityLabel="Workspace name"
+            class="kit-field" (textChange)="name.set(value($event))"></TextField>
+          <Label samText="body" text="Email address" class="kit-label"></Label>
+          <TextField samField [text]="email()" [samInvalid]="invalidEmail()" hint="you@example.com" keyboardType="email"
+            autocorrect="false" autocapitalizationType="none" accessibilityLabel="Email address"
+            (textChange)="email.set(value($event))"></TextField>
+          <Label samText="meta" [text]="invalidEmail() ? 'Invalid email. Try name@example.com.' : 'An example field. No email is sent.'"
+            [samMuted]="!invalidEmail()" class="kit-help" accessibilityLiveRegion="polite"></Label>
+          <Label samText="body" text="Instructions" class="kit-label"></Label>
+          <TextView samField [text]="notes()" hint="How should SAM respond?" [samFieldMinHeight]="100" textWrap="true"
+            accessibilityLabel="Instructions" class="kit-field" (textChange)="notes.set(value($event))"></TextView>
+          <Button samButton="secondary" text="Validate example" horizontalAlignment="left" maxWidth="240" (tap)="validate()"></Button>
+        </StackLayout>
+
+        <StackLayout samSurface="card" class="kit-section" samReveal>
+          <Label samText="meta" [samMuted]="true" text="03 / SELECTION" class="kit-label"></Label>
+          <Label samText="heading" text="Small choices, clear states." class="kit-section-title"></Label>
+          <Label samText="body" text="Preferences" class="kit-label"></Label>
+          <sam-choice label="Remember context" [checked]="remember()" (checkedChange)="remember.set($event)" class="kit-choice"></sam-choice>
+          <sam-choice label="Preview unavailable option" [disabled]="true" class="kit-choice"></sam-choice>
+          <GridLayout columns="*, auto" margin="8 0 20">
+            <Label col="0" samText="body" text="Preview notifications" verticalAlignment="center" marginRight="12"></Label>
+            <Switch col="1" [checked]="notifications()" [color]="ui.tokens().accent"
+              [backgroundColor]="ui.tokens().control" accessibilityLabel="Preview notifications"
+              (checkedChange)="notifications.set(checkedValue($event))"></Switch>
+          </GridLayout>
+          <Label samText="body" text="Response style" class="kit-label"></Label>
+          @for (style of ['Concise', 'Balanced', 'Detailed']; track style) {
+            <sam-choice kind="radio" [label]="style" [checked]="answerStyle() === style"
+              (checkedChange)="answerStyle.set(style)" class="kit-choice"></sam-choice>
+          }
+          <Label samText="meta" [samMuted]="true" [text]="'Selected: ' + answerStyle() + ' · Context ' + (remember() ? 'on' : 'off')" marginTop="8"></Label>
+        </StackLayout>
+      } @else if (section() === 'surfaces') {
+        <StackLayout samSurface="card" class="kit-section" samReveal>
+          <Label samText="meta" [samMuted]="true" text="01 / SURFACES" class="kit-label"></Label>
+          <Label samText="heading" text="Everything has a place." class="kit-section-title"></Label>
+          <StackLayout samSurface="inset" marginBottom="12">
+            <Label samText="title" text="Inset / a quieter layer"></Label>
+            <Label samText="body" [samMuted]="true" text="For supporting information and grouped fields." marginTop="6"></Label>
+          </StackLayout>
+          <StackLayout samSurface="raised">
+            <Label samText="title" text="Raised / a little emphasis"></Label>
+            <Label samText="body" [samMuted]="true" text="For a summary, selection, or the next step." marginTop="6"></Label>
+          </StackLayout>
+        </StackLayout>
+        <StackLayout samSurface="card" class="kit-section" samReveal>
+          <Label samText="meta" [samMuted]="true" text="02 / COMPOSITION" class="kit-label"></Label>
+          <Label samText="heading" [text]="name() || 'Your workspace'" class="kit-label"></Label>
+          <Label samText="body" [samMuted]="true" text="A small card built from the same parts as the rest of the kit." marginBottom="16"></Label>
+          <GridLayout [columns]="narrow() ? '*' : '*, *'" [rows]="narrow() ? 'auto, auto' : 'auto'">
+            <StackLayout col="0" row="0" samSurface="inset" class="kit-tile">
+              <Label samText="meta" [samMuted]="true" text="EXAMPLE USAGE"></Label>
+              <Label samText="heading" text="$0.00042" class="kit-metric"></Label>
+              <Label samText="meta" [samMuted]="true" text="Illustrative amount"></Label>
+            </StackLayout>
+            <StackLayout [col]="narrow() ? 0 : 1" [row]="narrow() ? 1 : 0" samSurface="inset" class="kit-tile">
+              <Label samText="meta" [samMuted]="true" text="RESPONSE STYLE"></Label>
+              <Label samText="heading" [text]="answerStyle()" class="kit-metric"></Label>
+              <Label samText="meta" [samMuted]="true" text="Your selection"></Label>
+            </StackLayout>
+          </GridLayout>
+          <FlexboxLayout samActions marginTop="12">
+            <Button samButton="primary" samAction text="Continue" (tap)="notice.set('Example opened. This card is a reusable composition.')"></Button>
+            <Button samButton="secondary" samAction text="Details" (tap)="section.set('type')"></Button>
+          </FlexboxLayout>
+        </StackLayout>
+        <StackLayout samSurface="card" class="kit-section" samReveal>
+          <Label samText="meta" [samMuted]="true" text="03 / FEEDBACK" class="kit-label"></Label>
+          <Label samText="heading" text="A state for every moment." class="kit-section-title"></Label>
+          <ActivityIndicator busy="true" [color]="ui.tokens().accent" width="24" height="24" horizontalAlignment="left" accessibilityLabel="Example loading indicator"></ActivityIndicator>
+          <Label samText="body" text="Loading / Gathering your ideas" marginTop="8"></Label>
+          <Label samText="meta" [samMuted]="true" text="Loading indicator example; no request is running." class="kit-help"></Label>
+          <Progress value="64" maxValue="100" [color]="ui.tokens().accent" accessibilityLabel="Example progress, 64 percent"></Progress>
+          <Label samText="meta" [samMuted]="true" text="Progress / 64% complete" class="kit-help"></Label>
+          <StackLayout samSurface="inset" marginBottom="12">
+            <Label samText="title" text="Empty / A fresh start"></Label>
+            <Label samText="body" [samMuted]="true" text="No items yet. Add an idea when you are ready." marginTop="6"></Label>
+          </StackLayout>
+          <Button samButton="danger" text="Destructive action example" horizontalAlignment="left" maxWidth="280"
+            (tap)="notice.set('Destructive style preview only. No data was deleted.')"></Button>
+        </StackLayout>
+      } @else if (section() === 'type') {
+        <StackLayout samSurface="card" class="kit-section" samReveal>
+          <Label samText="meta" [samMuted]="true" text="01 / TYPOGRAPHY" class="kit-label"></Label>
+          <Label samText="display" text="Aa. A little clarity." class="kit-small"></Label>
+          <Label samText="heading" text="Headings / 20" class="kit-small"></Label>
+          <Label samText="title" text="Card titles / 16" class="kit-small"></Label>
+          <Label samText="body" text="Body / 14. Useful words, comfortable lines, and room for longer thoughts." class="kit-small"></Label>
+          <Label samText="meta" [samMuted]="true" text="Metadata / 12. Supporting detail stays readable." class="kit-small"></Label>
+          <Label samText="code" text="0123456789  $0.00042" class="kit-small"></Label>
+          <StackLayout class="kit-rule" [backgroundColor]="ui.tokens().line"></StackLayout>
+          <Label samText="meta" [samMuted]="true" text="System fonts. Native text scaling. No font downloads."></Label>
+        </StackLayout>
+        <StackLayout samSurface="card" class="kit-section" samReveal>
+          <Label samText="meta" [samMuted]="true" text="02 / RHYTHM & EDGES" class="kit-label"></Label>
+          @for (space of [4, 8, 12, 16, 24, 32]; track space) {
+            <GridLayout columns="48, *" marginBottom="10">
+              <Label col="0" samText="code" [text]="'' + space" verticalAlignment="center"></Label>
+              <StackLayout col="1" [width]="space * 5" height="12" [borderRadius]="ui.tokens().controlRadius"
+                [backgroundColor]="ui.tokens().accent" horizontalAlignment="left" verticalAlignment="center"></StackLayout>
+            </GridLayout>
+          }
+          <Label samText="meta" [samMuted]="true" [text]="'Corners: ' + ui.tokens().radius + ' dip · Borders: ' + ui.tokens().border + ' dip'" class="kit-spec"></Label>
+          <Label samText="meta" [samMuted]="true" text="48 dip touch targets · 8 dip action gaps · 760 dip content cap" marginTop="8"></Label>
+        </StackLayout>
+        <StackLayout samSurface="card" class="kit-section" samReveal>
+          <Label samText="meta" [samMuted]="true" text="03 / BUILD WITH THE KIT" class="kit-label"></Label>
+          <Label samText="heading" text="One source. Many screens." class="kit-section-title"></Label>
+          <Label samText="code" text="samButton / samActions / samAction" class="kit-code"></Label>
+          <Label samText="code" text="samField / sam-choice" class="kit-code"></Label>
+          <Label samText="code" text="samSurface / samText" class="kit-code"></Label>
+          <Label samText="body" [samMuted]="true" text="Every example here uses shared primitives. Change a token once and the whole kit follows." marginTop="8"></Label>
+        </StackLayout>
+       } @else {
+        <StackLayout samSurface="card" class="kit-section" samReveal>
+          <Label samText="meta" [samAccent]="true" text="04 / MOTION" marginBottom="12"></Label>
+          <Label samText="display" text="A little less abrupt."></Label>
+          <Label samText="body" [samMuted]="true" text="Press a button: it settles inward, then eases back. Open the menu: the drawer glides in. New panels arrive with a soft fade and lift." marginTop="12"></Label>
+          <StackLayout samSurface="support" marginTop="16" [samReveal]="replay()">
+            <Label samText="title" text="Hello again."></Label>
+            <Label samText="body" [samSupport]="true" text="A gentle arrival, with room to breathe." marginTop="6"></Label>
+          </StackLayout>
+          <FlexboxLayout samActions marginTop="16">
+            <Button samButton="primary" samAction text="Replay arrival" (tap)="replay.update(replayIncrement)"></Button>
+            <Button samButton="secondary" samAction text="Open drawer" (tap)="drawer.show()"></Button>
+          </FlexboxLayout>
+          <GridLayout columns="*, auto" marginTop="12">
+            <Label col="0" samText="body" text="Reduce motion preview" verticalAlignment="center" marginRight="12"></Label>
+            <Switch col="1" minWidth="48" minHeight="48" [checked]="ui.reducedMotion()" [color]="ui.tokens().secondaryAccent" accessibilityLabel="Reduce motion preview" (checkedChange)="ui.reducedMotion.set(checkedValue($event))"></Switch>
+          </GridLayout>
+          <Label samText="meta" [samMuted]="true" text="Press 80 ms · Release 180 ms · Arrival 240 ms · Drawer 280 ms. Reduced motion removes transforms and transitions." marginTop="16"></Label>
+        </StackLayout>
+      }
+      <Label samText="meta" [samMuted]="true" text="Interlude is the official theme. Experiments here stay in the kit. Use Menu → Appearance to change SAM." textAlignment="center" margin="8 16 16"></Label>
+    </StackLayout>
+  </ScrollView>
+  @if (drawer.open()) { <ns-drawer row="0" rowSpan="2" active="ui-kit"></ns-drawer> }
+</GridLayout>

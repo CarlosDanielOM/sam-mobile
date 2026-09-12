@@ -1,0 +1,29 @@
+.kit-header { padding: 12 16 8; }
+.kit-header-title { margin-left: 12; }
+.kit-content { padding: 8 16 32; }
+.kit-topline { margin: 8 0 12; }
+.kit-designs { margin-bottom: 12; }
+.kit-design-tab { margin: 3; padding: 10 4; font-size: 12; }
+.kit-hero { margin-bottom: 20; }
+.kit-hero-copy { margin-top: 16; }
+.kit-section { margin-bottom: 16; }
+.kit-section-title { margin-bottom: 14; }
+.kit-label { margin-bottom: 8; }
+.kit-help { margin: 6 0 14; }
+.kit-field { margin-bottom: 14; }
+.kit-choice { margin-bottom: 8; }
+.kit-gap { height: 16; }
+.kit-rule { height: 1; margin: 16 0; }
+.kit-tile { margin: 4; padding: 14; }
+.kit-code { margin-bottom: 8; }
+.kit-mode { margin-left: 8; }
+.kit-notice { margin-bottom: 16; }
+.kit-tab { margin: 0 4 16 0; padding: 10 6; }
+.kit-swatch { margin: 4; width: 72; flex-grow: 1; min-height: 48; border-width: 2; }
+.kit-metric { margin-top: 6; }
+.kit-small { margin: 0 0 8; }
+.kit-spec { margin-top: 12; }
+
+.kit-hex { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); }
+
+.kit-appearance { margin-bottom: 16; }

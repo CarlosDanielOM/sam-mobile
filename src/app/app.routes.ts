@@ -10,4 +10,6 @@ export const routes: Routes = [
   { path: 'providers', component: ProvidersComponent },
   { path: 'agents', component: AgentsComponent },
   { path: 'embeddings', component: EmbeddingsComponent },
+  { path: 'appearance', loadComponent: () => import('./appearance/appearance.component').then(m => m.AppearanceComponent) },
+  { path: 'ui-kit', loadComponent: () => import('./ui-kit/ui-kit.component').then(m => m.UiKitComponent) },
 ];

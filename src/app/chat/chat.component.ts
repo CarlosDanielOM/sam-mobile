@@ -1,6 +1,7 @@
+import { SamThemeScopeDirective, SamPressDirective, SamRevealDirective, SamUiTheme } from '../../core/ui';
 import { ChangeDetectionStrategy, Component, NO_ERRORS_SCHEMA, effect, inject, signal } from '@angular/core';
 import { NativeScriptCommonModule } from '@nativescript/angular';
-import { Color, EventData, Page, ScrollEventData, ScrollView, TextField } from '@nativescript/core';
+import { Color, EventData, ScrollEventData, ScrollView, TextField } from '@nativescript/core';
 import { ChatStore } from '../../core/chat.store';
 import { ProviderService, type ModelOption } from '../../core/provider.service';
 import { DrawerComponent } from '../shell/drawer.component';
@@ -9,7 +10,7 @@ import { DrawerService } from '../shell/drawer.service';
 @Component({
   selector: 'ns-chat',
   templateUrl: './chat.component.html',
-  imports: [NativeScriptCommonModule, DrawerComponent],
+  imports: [NativeScriptCommonModule, DrawerComponent, SamThemeScopeDirective, SamPressDirective, SamRevealDirective],
   schemas: [NO_ERRORS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -17,6 +18,7 @@ export class ChatComponent {
   readonly chat = inject(ChatStore);
   readonly providers = inject(ProviderService);
   readonly drawer = inject(DrawerService);
+  readonly ui = inject(SamUiTheme);
   readonly picking = signal(false);
   readonly inspecting = signal(false);
   readonly atBottom = signal(true);
@@ -26,15 +28,12 @@ export class ChatComponent {
   private ring: any = null;
 
   constructor() {
-    const page = inject(Page);
-    page.actionBarHidden = true;
-    page.backgroundColor = new Color('#0C0C10');
-    page.statusBarStyle = 'light';
-    page.androidStatusBarBackground = new Color('#0C0C10');
     effect(() => {
       const percent = this.chat.usageSummary()?.contextPercent ?? 0;
       if (this.ring) {
         this.ring.setProgress(Math.min(100, percent));
+        this.ring.setTrackColor(new Color(this.ui.tokens().line).android);
+        this.ring.setIndicatorColor([new Color(this.ui.tokens().secondaryAccent).android]);
       }
     });
   }
@@ -57,12 +56,8 @@ export class ChatComponent {
       ring.setIndeterminate(false);
       ring.setIndicatorSize(dp(14));
       ring.setTrackThickness(dp(3));
-      ring.setTrackColor(globals.android.graphics.Color.parseColor('#241A40'));
-      ring.setIndicatorColor([
-        globals.android.graphics.Color.parseColor('#C084FC'),
-        globals.android.graphics.Color.parseColor('#38BDF8'),
-        globals.android.graphics.Color.parseColor('#2DD4BF'),
-      ]);
+      ring.setTrackColor(new Color(this.ui.tokens().line).android);
+      ring.setIndicatorColor([new Color(this.ui.tokens().secondaryAccent).android]);
       ring.setProgress(Math.min(100, this.chat.usageSummary()?.contextPercent ?? 0));
       event.view = ring;
       this.ring = ring;

@@ -1,4 +1,6 @@
 import './core/register-oauth';
+import { SamUiTheme } from './core/ui/theme.service';
+import { AppAppearance } from './core/ui/app-appearance.service';
 import {
   bootstrapApplication,
   provideNativeScriptHttpClient,
@@ -16,6 +18,7 @@ runNativeScriptAngularApp({
   appModuleBootstrap: () => {
     return bootstrapApplication(AppComponent, {
       providers: [
+        { provide: SamUiTheme, useExisting: AppAppearance },
         provideNativeScriptHttpClient(withInterceptorsFromDi()),
         provideNativeScriptRouter(routes),
         provideZonelessChangeDetection(),

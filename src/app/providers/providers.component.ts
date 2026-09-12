@@ -1,6 +1,7 @@
+import { SamThemeScopeDirective, SamPressDirective, SamRevealDirective } from '../../core/ui';
 import { ChangeDetectionStrategy, Component, NO_ERRORS_SCHEMA, inject, signal } from '@angular/core';
 import { NativeScriptCommonModule } from '@nativescript/angular';
-import { Color, Page, Utils, isAndroid } from '@nativescript/core';
+import { Utils, isAndroid } from '@nativescript/core';
 import { ACCOUNT_CATALOG, type AccountEntry } from '../../core/account-catalog';
 import { SamAuthInteraction } from '../../core/auth-interaction';
 import { ModelPricingService } from '../../core/model-pricing.service';
@@ -11,7 +12,7 @@ import { DrawerService } from '../shell/drawer.service';
 @Component({
   selector: 'ns-providers',
   templateUrl: './providers.component.html',
-  imports: [NativeScriptCommonModule, DrawerComponent],
+  imports: [NativeScriptCommonModule, DrawerComponent, SamThemeScopeDirective, SamPressDirective, SamRevealDirective],
   schemas: [NO_ERRORS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -22,13 +23,6 @@ export class ProvidersComponent {
   readonly catalog = ACCOUNT_CATALOG;
   readonly drawer = inject(DrawerService);
 
-  constructor() {
-    const page = inject(Page);
-    page.actionBarHidden = true;
-    page.backgroundColor = new Color('#0C0C10');
-    page.statusBarStyle = 'light';
-    page.androidStatusBarBackground = new Color('#0C0C10');
-  }
 
   readonly copied = signal(false);
 

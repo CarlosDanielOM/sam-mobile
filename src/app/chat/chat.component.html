@@ -1,17 +1,17 @@
-<GridLayout rows="auto, auto, *, auto" class="sam-screen">
+<GridLayout samThemeScope rows="auto, auto, *, auto" class="sam-screen">
   <GridLayout row="0">
-    <GridLayout columns="*, auto" class="sam-header">
+    <GridLayout columns="*" rows="auto, auto" class="sam-header">
       <GridLayout col="0" columns="auto, *">
-        <Label
+        <Button samPress
           col="0"
           class="sam-chip"
           verticalAlignment="center"
           text="Menu"
           accessibilityLabel="Open menu"
           (tap)="drawer.show()"
-        ></Label>
+        ></Button>
         <StackLayout col="1" verticalAlignment="center" class="sam-header-copy">
-          <Label [text]="chat.sessions.selectedSession()?.title || 'SAM'" class="sam-title"></Label>
+          <Label [text]="chat.sessions.selectedSession()?.title || 'SAM'" class="sam-title" textWrap="true"></Label>
           <StackLayout orientation="horizontal">
             <StackLayout
               [class]="providers.active() ? 'sam-live-dot' : 'sam-off-dot'"
@@ -23,7 +23,8 @@
       </GridLayout>
       @if (chat.usageSummary(); as usage) {
         <StackLayout
-          col="1"
+          col="0" row="1"
+          marginTop="8"
           class="sam-usage"
           verticalAlignment="center"
           accessibilityLabel="Usage details"
@@ -49,20 +50,20 @@
 
   @if (picking()) {
     <ScrollView row="1" height="220">
-      <StackLayout class="sam-pick">
+      <StackLayout class="sam-pick" samReveal>
         @for (option of providers.modelOptions(); track option.providerId + ':' + option.modelId) {
-          <Label
+          <Button samPress
             [class]="providers.isActive(option.providerId, option.modelId) ? 'sam-primary' : 'sam-choice'"
             [text]="option.label"
             (tap)="pickModel(option)"
-          ></Label>
+          ></Button>
         }
       </StackLayout>
     </ScrollView>
   } @else if (inspecting()) {
     @if (chat.turnUsage(); as detail) {
       <ScrollView row="1" height="360">
-        <StackLayout class="sam-usage-panel">
+        <StackLayout class="sam-usage-panel" samReveal>
           <Label class="sam-usage-title" [text]="detail.title"></Label>
           <GridLayout columns="*, auto" class="sam-usage-line">
             <Label col="0" class="sam-usage-k" text="API-equivalent"></Label>
@@ -100,7 +101,7 @@
   <ScrollView (loaded)="onThreadLoaded($event)" (scroll)="onThreadScroll($event)">
     <StackLayout class="sam-thread" (layoutChanged)="onThreadLayout()">
       @if (!chat.messages().length) {
-        <StackLayout class="sam-empty-wrap">
+        <StackLayout class="sam-empty-wrap" samReveal>
           <GridLayout class="sam-orb-ring" horizontalAlignment="center">
             <GridLayout class="sam-orb">
               <Label class="sam-orb-text" text="S"></Label>
@@ -113,7 +114,7 @@
             [text]="
               providers.active()
                 ? 'Type below to start chatting.'
-                : 'Tap Connect, pick a provider, and sign in.'
+                : 'Open Menu → Providers to connect an account.'
             "
           ></Label>
         </StackLayout>
@@ -129,21 +130,21 @@
             <Label class="sam-bubble-status" [text]="status"></Label>
           }
           @if (chat.canRetry(message)) {
-            <Label class="sam-retry" text="Retry" (tap)="chat.retry(message.id)"></Label>
+            <Button samPress class="sam-retry" horizontalAlignment="left" maxWidth="208" text="Retry" (tap)="chat.retry(message.id)"></Button>
           }
         </StackLayout>
       }
     </StackLayout>
   </ScrollView>
   @if (!atBottom()) {
-    <Label
+    <Button samPress
       class="sam-jump"
       text="Latest"
       horizontalAlignment="right"
       verticalAlignment="bottom"
       accessibilityLabel="Scroll to latest"
       (tap)="scrollToLatest()"
-    ></Label>
+    ></Button>
   }
   </GridLayout>
 
@@ -166,7 +167,7 @@
           (textChange)="onDraft($event)"
           (returnPress)="chat.send()"
         ></TextField>
-        <Label
+        <Button samPress
           col="1"
           [class]="sendClass()"
           verticalAlignment="center"
@@ -174,7 +175,7 @@
           [accessibilityLabel]="chat.sending() ? 'Stop generating' : 'Send message'"
           [isEnabled]="chat.sending() || !!chat.draft().trim()"
           (tap)="chat.sending() ? chat.cancel() : chat.send()"
-        ></Label>
+        ></Button>
       </GridLayout>
     </GridLayout>
   </StackLayout>

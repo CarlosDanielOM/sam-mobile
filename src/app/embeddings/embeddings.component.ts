@@ -1,6 +1,7 @@
+import { SamThemeScopeDirective, SamPressDirective, SamRevealDirective } from '../../core/ui';
 import { ChangeDetectionStrategy, Component, NO_ERRORS_SCHEMA, OnDestroy, inject, signal } from '@angular/core';
 import { NativeScriptCommonModule } from '@nativescript/angular';
-import { Color, Dialogs, Page, type TextField, type View } from '@nativescript/core';
+import { Dialogs, type TextField, type View } from '@nativescript/core';
 import type { BenchmarkSize } from '../../core/embeddings/lab';
 import { DrawerComponent } from '../shell/drawer.component';
 import { DrawerService } from '../shell/drawer.service';
@@ -8,7 +9,7 @@ import { EmbeddingsLabService } from './embeddings-lab.service';
 
 @Component({
   selector: 'ns-embeddings', templateUrl: './embeddings.component.html',
-  styleUrls: ['./embeddings.component.css'], imports: [NativeScriptCommonModule, DrawerComponent],
+  styleUrls: ['./embeddings.component.css'], imports: [NativeScriptCommonModule, DrawerComponent, SamThemeScopeDirective, SamPressDirective, SamRevealDirective],
   schemas: [NO_ERRORS_SCHEMA], changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmbeddingsComponent implements OnDestroy {
@@ -21,13 +22,6 @@ export class EmbeddingsComponent implements OnDestroy {
   ];
   private poll: ReturnType<typeof setInterval> | null = null;
 
-  constructor() {
-    const page = inject(Page);
-    page.actionBarHidden = true;
-    page.backgroundColor = new Color('#0C0C10');
-    page.statusBarStyle = 'light';
-    page.androidStatusBarBackground = new Color('#0C0C10');
-  }
   mounted(): void {
     if (this.poll !== null) return;
     this.lab.refresh();

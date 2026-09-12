@@ -1,5 +1,5 @@
-.lab-content { padding: 8 16 32 16; }
-.lab-content-wide { padding: 8 40 32 40; }
+.lab-content { padding: 8 16 32 16; width: 100%; max-width: 760; horizontal-align: center; }
+.lab-content-wide { padding: 8 40 32 40; width: 100%; max-width: 760; horizontal-align: center; }
 .lab-actions {
   flex-direction: row;
   flex-wrap: wrap;
@@ -9,16 +9,23 @@
 .lab-actions Button {
   flex-grow: 1;
   flex-shrink: 1;
-  min-width: 128;
+  width: 140;
+  min-width: 0;
+  max-width: 216;
   margin: 4;
 }
 Button { min-height: 48; white-space: normal; }
+.sam-card > Button, .lab-content > Button, .lab-content-wide > Button {
+  horizontal-align: left;
+  max-width: 280;
+}
 Button:disabled { opacity: 0.45; }
 TextField, TextView { min-height: 48; font-size: 16; }
-.lab-body { color: #d8d8e0; font-size: 14; margin-bottom: 12; line-height: 20; }
-.lab-label { color: #c9c9d4; font-size: 14; font-weight: 600; margin-bottom: 6; }
+.lab-body { color: var(--sam-text); font-size: 14; margin-bottom: 12; line-height: 4; }
+.lab-label { color: var(--sam-text); font-size: 14; font-weight: 600; margin-bottom: 6; }
 .lab-input { min-height: 96; }
-.lab-number { color: #5eead4; font-size: 14; margin-bottom: 8; }
-.lab-batch-modes Button { min-width: 72; }
+.lab-number { color: var(--sam-secondary-accent); font-size: 14; margin-bottom: 8; }
+.lab-batch-modes Button { width: 64; min-width: 48; max-width: 96; }
+.lab-batch-modes .lab-sequential { width: 112; max-width: 136; }
 .lab-batch-row { margin-top: 8; padding-top: 8; }
-.lab-batch-cell { color: #d8d8e0; font-size: 14; line-height: 20; margin: 0 4 12 0; }
+.lab-batch-cell { color: var(--sam-text); font-size: 14; line-height: 4; margin: 0 4 12 0; }

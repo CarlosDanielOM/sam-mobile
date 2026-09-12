@@ -1,6 +1,7 @@
+import { SamThemeScopeDirective, SamPressDirective, SamRevealDirective } from '../../core/ui';
 import { ChangeDetectionStrategy, Component, NO_ERRORS_SCHEMA, inject, signal } from '@angular/core';
 import { NativeScriptCommonModule } from '@nativescript/angular';
-import { Color, Page, TextView } from '@nativescript/core';
+import { TextView } from '@nativescript/core';
 import { AgentPromptService } from '../../core/agent-prompt.service';
 import { AGENT_CATALOG } from '../../core/agents';
 import { DrawerComponent } from '../shell/drawer.component';
@@ -9,7 +10,7 @@ import { DrawerService } from '../shell/drawer.service';
 @Component({
   selector: 'ns-agents',
   templateUrl: './agents.component.html',
-  imports: [NativeScriptCommonModule, DrawerComponent],
+  imports: [NativeScriptCommonModule, DrawerComponent, SamThemeScopeDirective, SamPressDirective, SamRevealDirective],
   schemas: [NO_ERRORS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -20,13 +21,6 @@ export class AgentsComponent {
   readonly draft = signal('');
   readonly saved = signal(false);
 
-  constructor() {
-    const page = inject(Page);
-    page.actionBarHidden = true;
-    page.backgroundColor = new Color('#0C0C10');
-    page.statusBarStyle = 'light';
-    page.androidStatusBarBackground = new Color('#0C0C10');
-  }
 
   beginEdit(id: string): void {
     this.editingId.set(id);

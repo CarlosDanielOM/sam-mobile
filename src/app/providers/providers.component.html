@@ -1,28 +1,29 @@
-<GridLayout rows="auto, *" class="sam-screen">
+<GridLayout samThemeScope rows="auto, *" class="sam-screen">
   <GridLayout row="0">
     <GridLayout columns="auto, *" class="sam-header">
-      <Label
+      <Button samPress
         col="0"
         class="sam-chip"
         text="Menu"
         verticalAlignment="center"
         accessibilityLabel="Open menu"
         (tap)="drawer.show()"
-      ></Label>
+        textWrap="true"
+      ></Button>
       <Label col="1" class="sam-title sam-header-copy" text="Providers" verticalAlignment="center"></Label>
     </GridLayout>
     <StackLayout class="sam-hairline" verticalAlignment="bottom"></StackLayout>
   </GridLayout>
 
   <ScrollView row="1">
-    <StackLayout class="sam-pad">
+    <StackLayout class="sam-pad" samReveal maxWidth="760">
       @for (item of catalog; track item.id) {
         <StackLayout class="sam-card">
           <Label class="sam-heading" [text]="item.name"></Label>
           <Label class="sam-muted" [text]="item.blurb" textWrap="true"></Label>
 
           @if (!item.methods.length) {
-            <Label class="sam-soon" text="Coming soon"></Label>
+            <Label class="sam-soon sam-action" maxWidth="280" text="Coming soon"></Label>
           } @else if (providers.state(item.id).connected) {
             <Label
               class="sam-status"
@@ -63,8 +64,10 @@
                   @if (pricing.editError(); as err) {
                     <Label class="sam-error" [text]="err" textWrap="true"></Label>
                   }
-                  <Label class="sam-primary" text="Save price" (tap)="pricing.saveEdit(model)"></Label>
-                  <Label class="sam-choice" text="Cancel" (tap)="pricing.cancelEdit()"></Label>
+                  <FlexboxLayout class="sam-actions">
+                    <Button samPress class="sam-primary" text="Save price" (tap)="pricing.saveEdit(model)" textWrap="true" maxWidth="216"></Button>
+                    <Button samPress class="sam-choice" text="Cancel" (tap)="pricing.cancelEdit()" textWrap="true" maxWidth="216"></Button>
+                  </FlexboxLayout>
                 } @else {
                   <Label class="sam-model-price" [text]="model.priceLabel" textWrap="true"></Label>
                   @if (model.cacheLabel) {
@@ -73,15 +76,17 @@
                   @if (model.sourceLabel) {
                     <Label class="sam-model-source" [text]="model.sourceLabel"></Label>
                   }
-                  <Label
-                    class="sam-model-action"
+                  <Button samPress
+                    class="sam-model-action sam-action"
                     [text]="model.actionLabel"
                     (tap)="pricing.beginEdit(model)"
-                  ></Label>
+                    textWrap="true"
+                    maxWidth="280"
+                  ></Button>
                 }
               </StackLayout>
             }
-            <Label class="sam-danger" text="Disconnect" (tap)="providers.disconnect(item.id)"></Label>
+            <Button samPress class="sam-danger sam-action" text="Disconnect" (tap)="providers.disconnect(item.id)" textWrap="true" maxWidth="280"></Button>
           } @else {
             <Label class="sam-status sam-status-off" text="Not connected"></Label>
 
@@ -92,8 +97,10 @@
                 text="Copy the code, open the sign-in page in Chrome, then come back here. SAM keeps waiting."
               ></Label>
               <Label class="sam-code" [text]="formatCode(device.userCode)" textWrap="true"></Label>
-              <Label class="sam-primary" text="Copy code" (tap)="copyCode()"></Label>
-              <Label class="sam-primary" text="Open sign-in page" (tap)="openVerificationUrl()"></Label>
+              <FlexboxLayout class="sam-actions">
+                <Button samPress class="sam-choice" text="Copy code" (tap)="copyCode()" textWrap="true" maxWidth="216"></Button>
+                <Button samPress class="sam-primary" text="Open sign-in page" (tap)="openVerificationUrl()" textWrap="true" maxWidth="216"></Button>
+              </FlexboxLayout>
               @if (copied()) {
                 <Label class="sam-status" text="Copied"></Label>
               }
@@ -107,29 +114,35 @@
               <Label class="sam-error" [text]="err" textWrap="true"></Label>
             }
 
-            @for (method of item.methods; track method) {
-              @if (method === 'oauth') {
-                <Label
-                  class="sam-primary"
-                  [text]="providers.connectingId() === item.id ? 'Waiting for sign-in…' : oauthLabel(item)"
-                  [isEnabled]="!providers.connectingId()"
-                  (tap)="providers.connect(item.id, 'oauth')"
-                ></Label>
-              } @else {
-                <Label
-                  class="sam-choice"
-                  text="Use API key"
-                  [isEnabled]="!providers.connectingId()"
-                  (tap)="providers.connect(item.id, 'api_key')"
-                ></Label>
+            <FlexboxLayout class="sam-actions">
+              @for (method of item.methods; track method) {
+                @if (method === 'oauth') {
+                  <Button samPress
+                    class="sam-primary"
+                    [text]="providers.connectingId() === item.id ? 'Waiting for sign-in…' : oauthLabel(item)"
+                    [isEnabled]="!providers.connectingId()"
+                    (tap)="providers.connect(item.id, 'oauth')"
+                    textWrap="true"
+                    maxWidth="216"
+                  ></Button>
+                } @else {
+                  <Button samPress
+                    class="sam-choice"
+                    text="Use API key"
+                    [isEnabled]="!providers.connectingId()"
+                    (tap)="providers.connect(item.id, 'api_key')"
+                    textWrap="true"
+                    maxWidth="216"
+                  ></Button>
+                }
               }
-            }
+            </FlexboxLayout>
           }
         </StackLayout>
       }
     </StackLayout>
-    </ScrollView>
+  </ScrollView>
   @if (drawer.open()) {
     <ns-drawer row="0" rowSpan="2" active="providers"></ns-drawer>
   }
-  </GridLayout>
+</GridLayout>

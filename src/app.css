@@ -3,23 +3,26 @@
 @tailwind utilities;
 
 /* ==========================================================
-   SAM · Graphite Violet — calm dark theme
-   quiet neutrals · single muted violet accent · teal status
+   SAM · Interlude — official theme
+   Semantic values come from src/core/ui/tokens.ts via samThemeScope.
    ========================================================== */
 
 Page {
-  background-color: #0c0c10;
+  background-color: var(--sam-background);
 }
 
 .sam-screen {
-  background-color: #0c0c10;
+  background-color: var(--sam-background);
 }
+
+/* NativeScript line-height adds spacing to the native font line height.
+   Keep body leading modest so multiline text does not look double-spaced. */
 
 /* ---------- empty-state orb ---------- */
 
 .sam-orb-ring {
   border-width: 1;
-  border-color: rgba(91, 86, 184, 0.30);
+  border-color: var(--sam-secondary-border);
   border-radius: 40;
   padding: 9;
   margin-bottom: 24;
@@ -29,11 +32,11 @@ Page {
   width: 72;
   height: 72;
   border-radius: 26;
-  background-color: #5b56b8;
+  background-color: var(--sam-accent);
 }
 
 .sam-orb-text {
-  color: #ffffff;
+  color: var(--sam-on-accent);
   font-size: 32;
   font-weight: 700;
   text-align: center;
@@ -54,17 +57,17 @@ Page {
 
 .sam-hairline {
   height: 1;
-  background-color: #1e1e26;
+  background-color: var(--sam-raised);
 }
 
 .sam-title {
-  color: #f2f2f5;
+  color: var(--sam-text);
   font-size: 19;
   font-weight: 700;
 }
 
 .sam-subtitle {
-  color: #9a9aa6;
+  color: var(--sam-muted);
   font-size: 12;
   margin-top: 1;
   vertical-align: center;
@@ -74,7 +77,7 @@ Page {
   width: 6;
   height: 6;
   border-radius: 3;
-  background-color: #5eead4;
+  background-color: var(--sam-secondary-accent);
   vertical-align: center;
   margin: 0 6 1 0;
 }
@@ -83,16 +86,18 @@ Page {
   width: 6;
   height: 6;
   border-radius: 3;
-  background-color: #4a4a55;
+  background-color: var(--sam-control);
   vertical-align: center;
   margin: 0 6 1 0;
 }
 
 .sam-chip {
-  color: #c9c9d4;
-  background-color: #17171d;
+  min-width: 48;
+  min-height: 48;
+  color: var(--sam-text);
+  background-color: var(--sam-surface);
   border-width: 1;
-  border-color: #2a2a34;
+  border-color: var(--sam-line);
   font-size: 13;
   font-weight: 600;
   padding: 9 14;
@@ -103,7 +108,7 @@ Page {
 /* ---------- usage readout (header) ---------- */
 
 .sam-usage-tokens {
-  color: #d9d9e1;
+  color: var(--sam-text);
   font-size: 11;
   font-weight: 600;
   text-align: right;
@@ -116,13 +121,13 @@ Page {
 }
 
 .sam-usage-context-text {
-  color: #8b8b96;
+  color: var(--sam-muted);
   font-size: 11;
   margin-left: 4;
 }
 
 .sam-usage-cost {
-  color: #8b8b96;
+  color: var(--sam-muted);
   font-size: 11;
   text-align: right;
   margin-left: 8;
@@ -131,16 +136,16 @@ Page {
 /* ---------- usage panel ---------- */
 
 .sam-usage-panel {
-  background-color: #141419;
+  background-color: var(--sam-surface);
   border-width: 1;
-  border-color: #23232c;
+  border-color: var(--sam-line);
   border-radius: 18;
   margin: 6 16 12 16;
   padding: 14;
 }
 
 .sam-usage-title {
-  color: #f2f2f5;
+  color: var(--sam-text);
   font-size: 15;
   font-weight: 700;
   margin-bottom: 8;
@@ -151,12 +156,12 @@ Page {
 }
 
 .sam-usage-k {
-  color: #9a9aa6;
+  color: var(--sam-muted);
   font-size: 13;
 }
 
 .sam-usage-section {
-  color: #5eead4;
+  color: var(--sam-secondary-accent);
   font-size: 13;
   font-weight: 700;
   margin-top: 8;
@@ -167,29 +172,29 @@ Page {
 }
 
 .sam-usage-v {
-  color: #d9d9e1;
+  color: var(--sam-text);
   font-size: 13;
   text-align: right;
 }
 
 .sam-usage-tree {
-  color: #b3b3bf;
+  color: var(--sam-muted);
   font-size: 13;
 }
 
 /* ---------- model picker ---------- */
 
 .sam-pick {
-  background-color: #141419;
+  background-color: var(--sam-surface);
   border-width: 1;
-  border-color: #23232c;
+  border-color: var(--sam-line);
   border-radius: 18;
   margin: 6 16 12 16;
   padding: 10;
 }
 
 .sam-back {
-  color: #a89ff5;
+  color: var(--sam-accent);
   font-size: 14;
   font-weight: 600;
   padding: 10 16 10 0;
@@ -207,7 +212,7 @@ Page {
 }
 
 .sam-empty-title {
-  color: #f2f2f5;
+  color: var(--sam-text);
   font-size: 22;
   font-weight: 700;
   text-align: center;
@@ -215,9 +220,9 @@ Page {
 }
 
 .sam-empty {
-  color: #9a9aa6;
+  color: var(--sam-muted);
   font-size: 14;
-  line-height: 20;
+  line-height: 4;
   text-align: center;
 }
 
@@ -234,49 +239,49 @@ Page {
 }
 
 .sam-bubble-user {
-  background-color: #5b56b8;
-  color: #ffffff;
+  background-color: var(--sam-accent);
+  color: var(--sam-on-accent);
   padding: 10 13;
   border-top-left-radius: 16;
   border-top-right-radius: 16;
   border-bottom-right-radius: 5;
   border-bottom-left-radius: 16;
   font-size: 15;
-  line-height: 21;
+  line-height: 4;
 }
 
 .sam-bubble-bot {
-  background-color: #16161c;
+  background-color: var(--sam-surface);
   border-width: 1;
-  border-color: #26262f;
-  color: #ececf1;
+  border-color: var(--sam-line);
+  color: var(--sam-text);
   padding: 10 13;
   border-top-left-radius: 16;
   border-top-right-radius: 16;
   border-bottom-right-radius: 16;
   border-bottom-left-radius: 5;
   font-size: 15;
-  line-height: 21;
+  line-height: 4;
 }
 
 .sam-bubble-status {
-  color: #777783;
+  color: var(--sam-muted);
   font-size: 11;
   margin-top: 4;
 }
 
 .sam-retry {
-  color: #5eead4;
+  color: var(--sam-secondary-accent);
   font-size: 13;
   font-weight: 600;
   margin-top: 5;
 }
 
 .sam-jump {
-  color: #d9d9e1;
-  background-color: #1a1a21;
+  color: var(--sam-text);
+  background-color: var(--sam-raised);
   border-width: 1;
-  border-color: #2c2c37;
+  border-color: var(--sam-line);
   font-size: 13;
   font-weight: 600;
   padding: 10 14;
@@ -295,10 +300,10 @@ Page {
 }
 
 .sam-error {
-  color: #f26d6f;
-  background-color: rgba(226, 72, 77, 0.10);
+  color: var(--sam-danger);
+  background-color: var(--sam-surface);
   border-width: 1;
-  border-color: rgba(226, 72, 77, 0.30);
+  border-color: var(--sam-danger);
   font-size: 13;
   padding: 9 11;
   border-radius: 12;
@@ -311,24 +316,24 @@ Page {
 }
 
 .sam-input-row {
-  background-color: #131318;
+  background-color: var(--sam-inset);
   border-width: 1;
-  border-color: #2b2b35;
+  border-color: var(--sam-line);
   border-radius: 24;
   padding: 4 5 4 12;
 }
 
 .sam-input {
   background-color: transparent;
-  color: #f2f2f5;
-  placeholder-color: #5c5c68;
+  color: var(--sam-text);
+  placeholder-color: var(--sam-muted);
   padding: 9 4;
   font-size: 15;
   min-height: 42;
 }
 
 .sam-send {
-  color: #ffffff;
+  color: var(--sam-on-accent);
   font-size: 14;
   font-weight: 700;
   padding: 10 18;
@@ -339,27 +344,27 @@ Page {
 }
 
 .sam-send-live {
-  background-color: #5b56b8;
+  background-color: var(--sam-accent);
 }
 
 .sam-send-idle {
-  background-color: #1e1e26;
-  color: #5c5c68;
+  background-color: var(--sam-raised);
+  color: var(--sam-muted);
 }
 
 .sam-send-stop {
-  background-color: #d9484f;
+  background-color: var(--sam-danger);
 }
 
 /* ---------- drawer ---------- */
 
 .sam-drawer {
-  background-color: #101016;
+  background-color: var(--sam-surface);
   padding: 22 14 28 14;
 }
 
 .sam-drawer-title {
-  color: #f2f2f5;
+  color: var(--sam-text);
   font-size: 20;
   font-weight: 700;
   margin-bottom: 18;
@@ -373,47 +378,90 @@ Page {
 
 .sam-pad {
   padding: 8 16 28 16;
+  width: 100%;
+  horizontal-align: center;
 }
 
 .sam-card {
-  background-color: #141419;
+  background-color: var(--sam-surface);
   border-width: 1;
-  border-color: #23232c;
+  border-color: var(--sam-line);
   border-radius: 18;
-  padding: 18;
+  padding: 16;
   margin-bottom: 12;
 }
 
 .sam-heading {
-  color: #f2f2f5;
+  color: var(--sam-text);
   font-size: 18;
   font-weight: 700;
   margin-bottom: 4;
 }
 
 .sam-muted {
-  color: #9a9aa6;
+  color: var(--sam-muted);
   font-size: 14;
-  line-height: 20;
+  line-height: 4;
   margin-bottom: 14;
 }
 
 .sam-status {
-  color: #5eead4;
+  color: var(--sam-secondary-accent);
   font-size: 14;
   font-weight: 600;
   margin-bottom: 14;
 }
 
 .sam-status-off {
-  color: #777783;
+  color: var(--sam-muted);
 }
 
 /* ---------- buttons ---------- */
 
+Button {
+  min-height: 48;
+  margin: 0;
+  text-transform: none;
+  android-elevation: 0;
+  android-dynamic-elevation-offset: 0;
+}
+
+Button:disabled {
+  opacity: 0.45;
+}
+
+/* Explicit preferred widths let native flexbox fit multiple actions per row.
+   Wrapping and flexible height preserve labels on narrow screens / large text.
+   Width caps use native maxWidth attributes: the Tailwind pipeline strips max-width. */
+.sam-actions {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  margin: 0 -4 4 -4;
+}
+
+.sam-actions > Button {
+  width: 140;
+  min-width: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+  margin: 4;
+  white-space: normal;
+}
+
+.sam-action {
+  horizontal-align: left;
+}
+
+.sam-session-close {
+  margin-left: 8;
+  margin-bottom: 10;
+  vertical-align: top;
+}
+
 .sam-primary {
-  color: #ffffff;
-  background-color: #5b56b8;
+  color: var(--sam-on-accent);
+  background-color: var(--sam-accent);
   font-size: 15;
   font-weight: 700;
   padding: 13;
@@ -423,10 +471,10 @@ Page {
 }
 
 .sam-choice {
-  color: #d8d8e0;
-  background-color: #17171d;
+  color: var(--sam-text);
+  background-color: var(--sam-surface);
   border-width: 1;
-  border-color: #2a2a34;
+  border-color: var(--sam-line);
   font-size: 15;
   font-weight: 600;
   padding: 13;
@@ -436,10 +484,10 @@ Page {
 }
 
 .sam-soon {
-  color: #5c5c68;
-  background-color: #121218;
+  color: var(--sam-muted);
+  background-color: var(--sam-inset);
   border-width: 1;
-  border-color: #22222b;
+  border-color: var(--sam-line);
   font-size: 14;
   font-weight: 600;
   padding: 13;
@@ -448,10 +496,10 @@ Page {
 }
 
 .sam-danger {
-  color: #f26d6f;
-  background-color: #201014;
+  color: var(--sam-danger);
+  background-color: var(--sam-accent-surface);
   border-width: 1;
-  border-color: #452127;
+  border-color: var(--sam-accent-surface);
   font-size: 15;
   font-weight: 600;
   padding: 13;
@@ -462,10 +510,10 @@ Page {
 /* ---------- providers: device code + models ---------- */
 
 .sam-code {
-  color: #5eead4;
-  background-color: #0d1b1a;
+  color: var(--sam-secondary-accent);
+  background-color: var(--sam-secondary-surface);
   border-width: 1;
-  border-color: #1e3d38;
+  border-color: var(--sam-secondary-border);
   font-family: monospace;
   font-size: 20;
   font-weight: 700;
@@ -476,38 +524,38 @@ Page {
 }
 
 .sam-model {
-  background-color: #0f0f14;
+  background-color: var(--sam-inset);
   border-width: 1;
-  border-color: #20202a;
+  border-color: var(--sam-line);
   border-radius: 14;
   padding: 11;
   margin-bottom: 8;
 }
 
 .sam-model-name {
-  color: #f2f2f5;
+  color: var(--sam-text);
   font-size: 14;
   font-weight: 600;
   margin-bottom: 3;
 }
 
 .sam-model-price {
-  color: #b3b3bf;
+  color: var(--sam-muted);
   font-size: 12;
   margin-bottom: 6;
 }
 
 .sam-model-source {
-  color: #777783;
+  color: var(--sam-muted);
   font-size: 11;
   margin-bottom: 6;
 }
 
 .sam-model-action {
-  color: #d8d8e0;
-  background-color: #1d1d26;
+  color: var(--sam-text);
+  background-color: var(--sam-raised);
   border-width: 1;
-  border-color: #2e2e3a;
+  border-color: var(--sam-line);
   font-size: 13;
   font-weight: 600;
   padding: 11;
@@ -517,17 +565,17 @@ Page {
 }
 
 .sam-price-label {
-  color: #9a9aa6;
+  color: var(--sam-muted);
   font-size: 12;
   margin-bottom: 3;
 }
 
 .sam-price-field {
-  background-color: #0f0f14;
+  background-color: var(--sam-inset);
   border-width: 1;
-  border-color: #23232c;
-  color: #f2f2f5;
-  placeholder-color: #5c5c68;
+  border-color: var(--sam-line);
+  color: var(--sam-text);
+  placeholder-color: var(--sam-muted);
   padding: 11;
   font-size: 14;
   border-radius: 11;
@@ -538,15 +586,64 @@ Page {
 /* ---------- agents: prompt editor ---------- */
 
 .sam-prompt {
-  background-color: #0f0f14;
+  background-color: var(--sam-inset);
   border-width: 1;
-  border-color: #23232c;
-  color: #f2f2f5;
-  placeholder-color: #5c5c68;
+  border-color: var(--sam-line);
+  color: var(--sam-text);
+  placeholder-color: var(--sam-muted);
   font-size: 14;
-  line-height: 20;
+  line-height: 4;
   padding: 11;
   border-radius: 12;
   min-height: 170;
   margin-bottom: 10;
+}
+
+/* Compatibility classes use Interlude tokens; new components use samButton etc. */
+.sam-primary, .sam-choice, .sam-chip, .sam-danger, .sam-model-action, .sam-send, .sam-jump {
+  font-family: var(--sam-label-font);
+  font-size: 14;
+  font-weight: 600;
+  border-radius: var(--sam-control-radius);
+  min-height: 48;
+  min-width: 48;
+  white-space: normal;
+}
+.sam-choice, .sam-chip, .sam-model-action, .sam-jump {
+  background-color: var(--sam-secondary-surface);
+  color: var(--sam-secondary-accent);
+  border-color: var(--sam-secondary-border);
+}
+.sam-title, .sam-empty-title, .sam-drawer-title {
+  font-family: var(--sam-display-font);
+  font-weight: 600;
+}
+.sam-empty-title { font-size: 30; }
+.sam-title { font-size: 20; white-space: normal; }
+.sam-heading { font-size: 20; }
+.sam-subtitle, .sam-usage-tokens, .sam-model-price, .sam-model-source, .sam-price-label {
+  font-family: var(--sam-label-font);
+  font-size: 12;
+}
+.sam-card, .sam-usage-panel, .sam-pick, .sam-model, .sam-code, .sam-error {
+  border-radius: var(--sam-radius);
+}
+.sam-price-field, .sam-prompt { border-radius: var(--sam-control-radius); border-color: var(--sam-control); font-size: 16; min-height: 48; }
+.sam-input { placeholder-color: var(--sam-muted); }
+.sam-bubble-user { background-color: var(--sam-accent-surface); color: var(--sam-text); }
+.sam-bubble-user, .sam-bubble-bot { border-radius: var(--sam-radius); }
+.sam-drawer { border-top-right-radius: var(--sam-radius); border-bottom-right-radius: var(--sam-radius); }
+.sam-send-stop { color: var(--sam-background); }
+.sam-bubble-status, .sam-usage-context-text, .sam-usage-cost { font-size: 12; }
+Progress, ActivityIndicator { color: var(--sam-accent); }
+
+.sam-retry {
+  background-color: var(--sam-secondary-surface);
+  color: var(--sam-secondary-accent);
+  border-width: 1;
+  border-color: var(--sam-secondary-border);
+  border-radius: var(--sam-control-radius);
+  font-family: var(--sam-label-font);
+  min-height: 48;
+  padding: 10 14;
 }

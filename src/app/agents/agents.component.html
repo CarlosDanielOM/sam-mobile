@@ -1,21 +1,22 @@
-<GridLayout rows="auto, *" class="sam-screen">
+<GridLayout samThemeScope rows="auto, *" class="sam-screen">
   <GridLayout row="0">
     <GridLayout columns="auto, *" class="sam-header">
-      <Label
+      <Button samPress
         col="0"
         class="sam-chip"
         text="Menu"
         verticalAlignment="center"
         accessibilityLabel="Open menu"
         (tap)="drawer.show()"
-      ></Label>
+        textWrap="true"
+      ></Button>
       <Label col="1" class="sam-title sam-header-copy" text="Agents" verticalAlignment="center"></Label>
     </GridLayout>
     <StackLayout class="sam-hairline" verticalAlignment="bottom"></StackLayout>
   </GridLayout>
 
   <ScrollView row="1">
-    <StackLayout class="sam-pad">
+    <StackLayout class="sam-pad" [samReveal]="editingId()" maxWidth="760">
       @if (editingId(); as id) {
         <StackLayout class="sam-card">
           <Label class="sam-heading" [text]="nameFor(id)"></Label>
@@ -30,16 +31,18 @@
           @if (saved()) {
             <Label class="sam-status" text="Saved"></Label>
           }
-          <Label class="sam-primary" text="Save prompt" (tap)="save()"></Label>
-          <Label class="sam-choice" text="Reset to default" (tap)="reset()"></Label>
-          <Label class="sam-choice" text="Back" (tap)="cancel()"></Label>
+          <FlexboxLayout class="sam-actions">
+            <Button samPress class="sam-primary" text="Save prompt" (tap)="save()" textWrap="true" maxWidth="216"></Button>
+            <Button samPress class="sam-choice" text="Reset to default" (tap)="reset()" textWrap="true" maxWidth="216"></Button>
+            <Button samPress class="sam-choice" text="Back" (tap)="cancel()" textWrap="true" maxWidth="216"></Button>
+          </FlexboxLayout>
         </StackLayout>
       } @else {
         @for (agent of prompts.agents(); track agent.id) {
           <StackLayout class="sam-card">
             <Label class="sam-heading" [text]="agent.name"></Label>
             <Label class="sam-muted" [text]="agent.prompt" textWrap="true"></Label>
-            <Label class="sam-choice" text="Edit system prompt" (tap)="beginEdit(agent.id)"></Label>
+            <Button samPress class="sam-choice sam-action" text="Edit system prompt" (tap)="beginEdit(agent.id)" textWrap="true" maxWidth="280"></Button>
           </StackLayout>
         }
       }

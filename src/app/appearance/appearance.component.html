@@ -1,0 +1,50 @@
+<GridLayout samThemeScope rows="auto, *" class="sam-screen">
+  <GridLayout row="0" columns="auto, *" class="sam-header">
+    <Button col="0" samButton="secondary" text="Menu" accessibilityLabel="Open menu" (tap)="drawer.show()"></Button>
+    <Label col="1" class="sam-title sam-header-copy" text="Appearance" verticalAlignment="center"></Label>
+  </GridLayout>
+  <ScrollView row="1">
+    <StackLayout class="sam-pad" maxWidth="760">
+      <StackLayout samSurface="raised" marginBottom="16" [samReveal]="ui.mode() + ui.effectiveColorMode()">
+        <Label samText="meta" [samAccent]="true" text="INTERLUDE / YOUR SPACE" marginBottom="12"></Label>
+        <Label samText="display" text="A softer kind of focus."></Label>
+        <Label samText="body" [samMuted]="true" text="Quiet curves, thoughtful details. Make SAM feel like your space." marginTop="8"></Label>
+      </StackLayout>
+      <StackLayout samSurface="card" marginBottom="16">
+        <Label samText="heading" text="Light & shade" marginBottom="12"></Label>
+        <FlexboxLayout samActions>
+          <Button samAction [samButton]="ui.mode() === 'dark' ? 'primary' : 'secondary'" text="Dark" [accessibilityLabel]="'Dark' + (ui.mode() === 'dark' ? ', selected' : '')" (tap)="ui.mode.set('dark')"></Button>
+          <Button samAction [samButton]="ui.mode() === 'light' ? 'primary' : 'secondary'" text="Light" [accessibilityLabel]="'Light' + (ui.mode() === 'light' ? ', selected' : '')" (tap)="ui.mode.set('light')"></Button>
+        </FlexboxLayout>
+        <Label samText="heading" text="Your palette" margin="16 0 12"></Label>
+        <FlexboxLayout samActions>
+          <Button samAction [samButton]="ui.colorMode() === 'color' ? 'primary' : 'secondary'" text="Color duet" [accessibilityLabel]="'Color duet' + (ui.colorMode() === 'color' ? ', selected' : '')" (tap)="ui.colorMode.set('color')"></Button>
+          <Button samAction [samButton]="ui.colorMode() === 'mono' ? 'primary' : 'secondary'" text="Monochrome" [accessibilityLabel]="'Monochrome' + (ui.colorMode() === 'mono' ? ', selected' : '')" (tap)="ui.colorMode.set('mono')"></Button>
+        </FlexboxLayout>
+        <Label samText="body" [samMuted]="true" text="Purple and cyan-blue together, or a quiet range of grays." marginTop="8"></Label>
+      </StackLayout>
+      <StackLayout samSurface="card" marginBottom="16">
+        <GridLayout columns="*, auto">
+          <Label col="0" samText="heading" text="Do not disturb" verticalAlignment="center" marginRight="12"></Label>
+          <Switch col="1" minWidth="48" minHeight="48" [checked]="ui.doNotDisturb()" [color]="ui.tokens().secondaryAccent" [backgroundColor]="ui.tokens().control" accessibilityLabel="Do not disturb appearance" (checkedChange)="ui.doNotDisturb.set(checked($event))"></Switch>
+        </GridLayout>
+        <Label samText="body" [samMuted]="true" text="A quieter appearance in grays. Turn it off to return to your chosen palette. Phone notifications stay as you set them." marginTop="8"></Label>
+        <Label samText="meta" [samSupport]="true" [text]="ui.doNotDisturb() ? 'DND on · your palette is remembered' : 'DND off'" marginTop="12" accessibilityLiveRegion="polite"></Label>
+      </StackLayout>
+      <StackLayout samSurface="card" marginBottom="16">
+        <GridLayout columns="*, auto">
+          <Label col="0" samText="heading" text="Reduce motion" verticalAlignment="center" marginRight="12"></Label>
+          <Switch col="1" minWidth="48" minHeight="48" [checked]="ui.reducedMotion()" [color]="ui.tokens().secondaryAccent" [backgroundColor]="ui.tokens().control" accessibilityLabel="Reduce motion" (checkedChange)="ui.reducedMotion.set(checked($event))"></Switch>
+        </GridLayout>
+        <Label samText="body" [samMuted]="true" text="Soft movement is on by default. Reduce motion keeps interactions still. SAM also respects your device’s reduced-motion setting." marginTop="8"></Label>
+        <StackLayout samSurface="support" marginTop="16" [samReveal]="replay()">
+          <Label samText="title" text="Room to breathe."></Label>
+          <Label samText="body" [samSupport]="true" text="A gentle arrival. A clear next step." marginTop="6"></Label>
+        </StackLayout>
+        <Button samButton="secondary" text="Replay movement" horizontalAlignment="left" maxWidth="280" marginTop="12" (tap)="replay.update(replayIncrement)"></Button>
+      </StackLayout>
+      <Label samText="meta" [samMuted]="true" text="Saved automatically. Interlude follows you across SAM." textAlignment="center" margin="8 16 16"></Label>
+    </StackLayout>
+  </ScrollView>
+  @if (drawer.open()) { <ns-drawer row="0" rowSpan="2" active="appearance"></ns-drawer> }
+</GridLayout>
